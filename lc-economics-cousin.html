@@ -30,12 +30,10 @@
     .field-input { width: 100%; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; color: white; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 600; padding: 11px 14px; outline: none; transition: border-color 0.2s; margin-bottom: 16px; }
     .field-input:focus { border-color: var(--econ2); }
     .field-input::placeholder { color: rgba(255,255,255,0.18); }
-    .level-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .level-row { display: flex; gap: 8px; margin-bottom: 0; }
     .level-btn { flex: 1; background: rgba(255,255,255,0.05); border: 2px solid rgba(255,255,255,0.1); border-radius: 8px; color: rgba(255,255,255,0.45); font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.9rem; padding: 11px; cursor: pointer; transition: all 0.2s; }
     .level-btn:hover { border-color: rgba(45,95,158,0.5); color: white; }
     .level-btn.selected { background: var(--econ2); border-color: var(--econ2); color: white; }
-    .topic-select { width: 100%; background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.12); border-radius: 10px; color: white; font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 10px 12px; outline: none; cursor: pointer; }
-    .topic-select option { background: #1e3a5f; }
     .enter-btn { width: 100%; padding: 15px; background: var(--econ2); color: white; font-family: 'Nunito', sans-serif; font-size: 1.05rem; font-weight: 900; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s; margin-top: 12px; }
     .enter-btn:hover { filter: brightness(1.12); }
     .turbo-note { color: rgba(255,255,255,0.28); font-size: 0.75rem; margin-top: 12px; font-style: italic; }
@@ -59,10 +57,6 @@
     .eh-actions { display: flex; gap: 6px; }
     .hdr-btn { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.55); font-family: 'Nunito', sans-serif; font-size: 0.7rem; font-weight: 700; padding: 5px 10px; border-radius: 7px; cursor: pointer; }
     .hdr-btn:hover { background: rgba(255,255,255,0.14); color: white; }
-    .topic-bar { display: flex; gap: 5px; flex-wrap: wrap; padding: 8px 16px; background: #f0f4fa; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-    .topic-pill { font-size: 0.7rem; padding: 4px 9px; border-radius: 20px; border: 2px solid #d0d8e8; background: white; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; color: var(--muted); transition: all 0.2s; }
-    .topic-pill:hover { border-color: var(--econ2); color: var(--econ2); }
-    .topic-pill.active { background: var(--econ2); border-color: var(--econ2); color: white; }
     .exam-body { flex: 1; overflow-y: auto; padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; }
 
     /* Messages */
@@ -73,46 +67,52 @@
     .c-bub p { margin-bottom: 8px; }
     .c-bub p:last-child { margin-bottom: 0; }
 
-    /* Question */
+    /* Question card */
     .question-card { background: white; border: 2px solid var(--econ2); border-radius: 14px; padding: 16px 18px; }
-    .q-label { font-size: 0.66rem; font-weight: 900; color: var(--econ2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: flex; justify-content: space-between; }
-    .q-marks { background: var(--econ2); color: white; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 8px; }
-    .q-topic-tag { font-size: 0.68rem; color: var(--muted); font-style: italic; margin-bottom: 6px; }
-    .q-text { font-family: 'Lora', serif; font-size: 1rem; font-weight: 600; color: var(--ink); line-height: 1.5; }
-
-    /* Write zone */
-    .write-zone { background: white; border: 2px solid var(--border); border-radius: 14px; padding: 14px 16px; transition: border-color 0.2s; }
-    .write-zone:focus-within { border-color: var(--econ2); }
-    .write-label { font-size: 0.66rem; font-weight: 900; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; justify-content: space-between; }
-    .write-ta { width: 100%; border: none; outline: none; font-family: 'Lora', serif; font-size: 0.93rem; line-height: 1.7; color: var(--ink); resize: none; min-height: 180px; background: none; }
-    .write-ta::placeholder { color: #ccc; font-style: italic; }
-    .write-footer { display: flex; justify-content: flex-end; margin-top: 10px; border-top: 1px solid var(--border); padding-top: 10px; }
+    .q-meta { font-size: 0.66rem; font-weight: 900; color: var(--econ2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .q-year-badge { background: var(--econ2); color: white; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 8px; }
+    .q-stem { font-family: 'Lora', serif; font-size: 0.95rem; font-weight: 600; color: var(--ink); line-height: 1.5; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .q-part { margin-bottom: 14px; }
+    .q-part:last-child { margin-bottom: 0; }
+    .q-part-header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 6px; }
+    .q-part-label { font-weight: 900; font-size: 0.9rem; color: var(--econ); }
+    .q-part-marks { font-size: 0.7rem; font-weight: 700; color: var(--muted); background: var(--aged); padding: 2px 7px; border-radius: 6px; }
+    .q-part-text { font-family: 'Lora', serif; font-size: 0.9rem; color: var(--ink); line-height: 1.5; margin-bottom: 8px; }
+    .write-ta { width: 100%; border: 2px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: 'Lora', serif; font-size: 0.88rem; line-height: 1.65; color: var(--ink); resize: none; min-height: 90px; outline: none; transition: border-color 0.2s; background: var(--paper); }
+    .write-ta:focus { border-color: var(--econ2); background: white; }
+    .write-ta::placeholder { color: #bbb; font-style: italic; }
+    .write-ta:disabled { opacity: 0.6; background: var(--aged); }
+    .wc-label { font-size: 0.62rem; color: var(--muted); text-align: right; margin-top: 3px; }
+    .submit-row { display: flex; justify-content: flex-end; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
     .submit-btn { background: var(--red); color: white; border: none; border-radius: 10px; padding: 11px 24px; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.92rem; cursor: pointer; }
     .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    /* Mark */
+    /* Mark card */
     .mark-card { background: white; border: 2px solid var(--border); border-radius: 14px; padding: 16px 18px; }
     .mark-label { font-size: 0.66rem; font-weight: 900; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
-    .mark-score-row { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
-    .mark-score-big { font-size: 2.4rem; font-weight: 900; }
-    .mark-score-max { font-size: 1rem; color: var(--muted); font-weight: 400; }
-    .mark-bar-wrap { flex: 1; background: var(--aged); border-radius: 50px; height: 10px; }
-    .mark-bar-fill { height: 100%; border-radius: 50px; }
+    .parts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; margin-bottom: 12px; }
+    .part-score-pill { background: var(--aged); border-radius: 10px; padding: 8px 10px; text-align: center; }
+    .part-score-label { font-size: 0.62rem; font-weight: 900; color: var(--muted); text-transform: uppercase; }
+    .part-score-val { font-size: 1.2rem; font-weight: 900; color: var(--econ); }
+    .part-score-max { font-size: 0.68rem; color: var(--muted); }
+    .mark-total-bar { border-radius: 12px; padding: 14px; margin-bottom: 12px; color: white; text-align: center; }
+    .mark-total-num { font-size: 2.2rem; font-weight: 900; }
+    .mark-total-sub { font-size: 0.75rem; opacity: 0.75; margin-top: 2px; }
     .mark-feedback { font-size: 0.87rem; line-height: 1.65; border-top: 1px solid var(--border); padding-top: 12px; }
     .mark-feedback p { margin-bottom: 8px; }
     .mark-feedback p:last-child { margin-bottom: 0; }
 
-    /* Model */
+    /* Model answer */
     .model-card { background: var(--econ-light); border: 2px solid var(--econ2); border-radius: 14px; padding: 16px 18px; }
-    .model-label { font-size: 0.66rem; font-weight: 900; color: var(--econ2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-    .model-intro { font-size: 0.8rem; color: var(--muted); margin-bottom: 12px; font-style: italic; }
-    .model-text { font-family: 'Lora', serif; font-size: 0.9rem; line-height: 1.8; }
+    .model-label { font-size: 0.66rem; font-weight: 900; color: var(--econ2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .model-intro { font-size: 0.78rem; color: var(--muted); margin-bottom: 12px; font-style: italic; }
+    .model-text { font-family: 'Lora', serif; font-size: 0.88rem; line-height: 1.8; }
     .model-note { display: inline-block; background: #fff8e1; border: 1px solid #f39c12; border-radius: 4px; padding: 1px 7px; font-family: 'Nunito', sans-serif; font-size: 0.68rem; color: #7f4f00; font-weight: 700; font-style: normal; margin-left: 4px; vertical-align: middle; }
 
     /* Prescription */
     .prescription { background: var(--econ-light); border: 2px solid var(--econ2); border-radius: 12px; padding: 14px 16px; }
     .presc-label { font-size: 0.66rem; font-weight: 900; color: var(--econ2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-    .presc-text { font-size: 0.88rem; color: var(--ink); line-height: 1.55; margin-bottom: 10px; }
+    .presc-text { font-size: 0.88rem; line-height: 1.55; margin-bottom: 10px; }
     .turbo-link { display: inline-block; background: var(--econ2); color: white; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 0.86rem; padding: 9px 20px; border-radius: 9px; text-decoration: none; }
 
     /* Actions */
@@ -127,11 +127,11 @@
     .prog-hdr h2 { font-family: 'Lora', serif; color: white; font-size: 1rem; flex: 1; }
     .prog-body { flex: 1; padding: 18px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
     .att-row { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; }
-    .att-num { font-size: 0.7rem; font-weight: 900; color: var(--muted); width: 22px; flex-shrink: 0; }
+    .att-num { font-size: 0.7rem; font-weight: 900; color: var(--muted); width: 24px; flex-shrink: 0; }
     .att-info { flex: 1; }
-    .att-topic-lbl { font-weight: 700; font-size: 0.8rem; }
-    .att-meta { font-size: 0.7rem; color: var(--muted); }
-    .att-score { font-size: 1.1rem; font-weight: 900; color: var(--econ2); }
+    .att-q { font-weight: 700; font-size: 0.8rem; line-height: 1.3; }
+    .att-meta { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+    .att-score { font-size: 1.1rem; font-weight: 900; color: var(--econ2); flex-shrink: 0; }
 
     /* Typing */
     .typing-ind { display: flex; align-items: center; gap: 5px; padding: 10px 14px; background: white; border: 1px solid var(--border); border-radius: 14px; border-top-left-radius: 4px; width: fit-content; }
@@ -182,52 +182,17 @@
       <path d="M88 160 L76 140 L88 130" fill="#152a44"/>
       <path d="M112 160 L124 140 L112 130" fill="#152a44"/>
     </svg>
-
     <h1 class="welcome-title">The Cousin</h1>
-    <p class="welcome-sub">LC Economics · HL &amp; OL · Exam Prep</p>
-
+    <p class="welcome-sub">LC Economics &middot; HL &amp; OL &middot; Exam Prep</p>
     <div class="welcome-card">
       <label class="field-label">Your first name</label>
       <input class="field-input" id="inp-name" type="text" placeholder="What do they call you?" maxlength="30" autocomplete="off">
-
       <label class="field-label">Exam level</label>
       <div class="level-row">
         <button class="level-btn" type="button" data-level="HL" onclick="selectLevel(this)">HL</button>
         <button class="level-btn" type="button" data-level="OL" onclick="selectLevel(this)">OL</button>
       </div>
-
-      <label class="field-label">Starting topic</label>
-      <select class="topic-select" id="inp-topic">
-        <optgroup label="Microeconomics">
-          <option value="demand_supply">Demand &amp; Supply</option>
-          <option value="elasticity">Elasticity</option>
-          <option value="market_structures">Market Structures</option>
-          <option value="costs_revenue">Costs &amp; Revenue</option>
-          <option value="market_failure">Market Failure</option>
-          <option value="govt_intervention">Government Intervention</option>
-        </optgroup>
-        <optgroup label="Macroeconomics">
-          <option value="national_income">National Income</option>
-          <option value="economic_growth">Economic Growth</option>
-          <option value="inflation">Inflation</option>
-          <option value="unemployment">Unemployment</option>
-          <option value="money_banking">Money &amp; Banking</option>
-          <option value="fiscal_policy">Fiscal Policy</option>
-          <option value="monetary_policy">Monetary Policy</option>
-        </optgroup>
-        <optgroup label="International">
-          <option value="trade">International Trade</option>
-          <option value="balance_payments">Balance of Payments</option>
-          <option value="exchange_rates">Exchange Rates</option>
-          <option value="eu">The European Union</option>
-        </optgroup>
-        <optgroup label="HL Only">
-          <option value="development_econ">Development Economics</option>
-          <option value="environmental_econ">Environmental Economics</option>
-        </optgroup>
-      </select>
     </div>
-
     <button class="enter-btn" type="button" onclick="enterCousin()">Enter &rarr;</button>
     <p class="turbo-note" id="turbo-note">Loading your Turbo data...</p>
     <footer>&copy; 2026 Synge Street Games: Imagination and Perseverance</footer>
@@ -236,7 +201,7 @@
 
 <!-- SCREEN 2: REVEAL -->
 <div id="screen-reveal" class="screen">
-  <div class="reveal-inner" style="position:relative;z-index:1;">
+  <div class="reveal-inner" style="text-align:center;">
     <span class="cousin-big">&#127891;</span>
     <p class="reveal-text" id="reveal-text">Right. Sit down.</p>
     <p class="reveal-sub" id="reveal-sub">Let's see what you've got.</p>
@@ -251,14 +216,13 @@
     <span class="eh-cousin">&#127891;</span>
     <div class="eh-info">
       <div class="eh-name">The Cousin &mdash; LC Economics</div>
-      <div class="eh-sub" id="header-sub">HL &middot; Topic</div>
+      <div class="eh-sub" id="header-sub">HL</div>
     </div>
     <div class="eh-actions">
       <button class="hdr-btn" type="button" onclick="showScreen('screen-progress')">&#128200; Progress</button>
       <button class="hdr-btn" type="button" onclick="showScreen('screen-welcome')">Home</button>
     </div>
   </div>
-  <div class="topic-bar" id="topic-bar"></div>
   <div class="exam-body" id="exam-body"></div>
   <footer class="light">&copy; 2026 Synge Street Games: Imagination and Perseverance</footer>
 </div>
@@ -275,393 +239,606 @@
 </div>
 
 <script>
-const WORKER_URL = 'WORKER_URL_PLACEHOLDER';
+const WORKER_URL = 'https://still-sun-72cf.seansynge.workers.dev';
 
+// ============================================================
+// REAL LC ECONOMICS EXAM QUESTIONS — structured as on the paper
+// Each question has a stem + parts with individual mark allocations
+// Sourced from SEC LC Economics exam papers (HL and OL)
+// ============================================================
 const QUESTIONS = {
-  demand_supply: [
-    {text:'Define demand and explain the law of demand. Use a diagram to illustrate your answer.',marks:20,hint:'Define demand precisely. State the law. Name factors affecting demand. Draw a correctly labelled demand curve.'},
-    {text:'Using supply and demand analysis, explain the effect of a rise in petrol prices on the market for electric vehicles.',marks:20,hint:'Substitute goods. Rise in petrol price shifts demand for EVs right. New higher equilibrium price and quantity.'},
-    {text:'Distinguish between a movement along a demand curve and a shift of the demand curve. Give one example of each.',marks:15,hint:'Movement = price change. Shift = non-price factor e.g. income, tastes, price of related goods.'},
-    {text:'Explain the concept of market equilibrium and describe the adjustment process when there is excess demand.',marks:20,hint:'Equilibrium: QD = QS. Excess demand: price below equilibrium. Price rises. QD falls, QS rises. New equilibrium.'},
-    {text:'Using supply and demand, analyse the effect of a bumper harvest on equilibrium price and quantity in an agricultural market.',marks:20,hint:'Supply shifts right. Equilibrium price falls. Equilibrium quantity rises. Show on diagram.'},
+  HL: [
+    {
+      year: '2023 HL Q2',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Define the term "price elasticity of demand" (PED).' },
+        { label: 'b', marks: 8,  text: 'Explain two factors that influence the price elasticity of demand for a product. Give one example of each factor.' },
+        { label: 'c', marks: 8,  text: 'Explain, using a diagram, how a firm with inelastic demand can increase its total revenue.' },
+        { label: 'd', marks: 10, text: 'Evaluate the importance of price elasticity of demand for a government when deciding on which goods to place an indirect tax.' },
+      ]
+    },
+    {
+      year: '2023 HL Q4',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Distinguish between "frictional unemployment" and "structural unemployment".' },
+        { label: 'b', marks: 8,  text: 'Explain two economic consequences of long-term unemployment for the Irish economy.' },
+        { label: 'c', marks: 8,  text: 'Explain the relationship between inflation and unemployment using the Phillips Curve.' },
+        { label: 'd', marks: 10, text: 'Evaluate the effectiveness of two government policies to reduce unemployment in Ireland.' },
+      ]
+    },
+    {
+      year: '2022 HL Q1',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Define "market failure".' },
+        { label: 'b', marks: 8,  text: 'Explain, with the aid of a diagram, how a negative externality leads to market failure. Use a real-world example.' },
+        { label: 'c', marks: 8,  text: 'Explain two methods a government can use to correct market failure caused by negative externalities.' },
+        { label: 'd', marks: 10, text: 'Evaluate the effectiveness of a carbon tax as a policy to address the negative externality of carbon emissions.' },
+      ]
+    },
+    {
+      year: '2022 HL Q3',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Distinguish between "GDP" and "GNI" as measures of national income.' },
+        { label: 'b', marks: 6,  text: 'Explain why GNI* (modified GNI) is considered a more accurate measure of Irish living standards than GDP.' },
+        { label: 'c', marks: 8,  text: 'Explain the Keynesian multiplier effect with reference to an increase in government expenditure.' },
+        { label: 'd', marks: 12, text: 'Evaluate the effectiveness of fiscal policy as a tool to manage the Irish economy. In your answer refer to at least two advantages and two disadvantages of fiscal policy.' },
+      ]
+    },
+    {
+      year: '2021 HL Q2',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Define "economies of scale".' },
+        { label: 'b', marks: 8,  text: 'Explain two internal economies of scale that a large firm might benefit from. Give one named example for each.' },
+        { label: 'c', marks: 8,  text: 'Explain, with the aid of a diagram, the long-run equilibrium position of a firm in perfect competition.' },
+        { label: 'd', marks: 10, text: 'Compare and contrast perfect competition and monopoly in terms of price, output, and efficiency for consumers.' },
+      ]
+    },
+    {
+      year: '2021 HL Q5',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Define the term "balance of payments".' },
+        { label: 'b', marks: 6,  text: 'Distinguish between the current account and the financial account of the balance of payments.' },
+        { label: 'c', marks: 8,  text: 'Explain the J-curve effect. Why might a depreciation of the euro initially worsen Ireland\'s current account?' },
+        { label: 'd', marks: 12, text: 'Evaluate the benefits and drawbacks of Ireland\'s membership of the eurozone, with reference to monetary policy and exchange rates.' },
+      ]
+    },
+    {
+      year: '2019 HL Q1',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "comparative advantage" in international trade.' },
+        { label: 'b', marks: 8,  text: 'Explain how the theory of comparative advantage applies to two countries. Use a numerical example in your answer.' },
+        { label: 'c', marks: 7,  text: 'Explain two arguments in favour of protectionist trade policies.' },
+        { label: 'd', marks: 10, text: 'Evaluate the role of the World Trade Organisation (WTO) in promoting free trade. In your answer consider both advantages and limitations.' },
+      ]
+    },
+    {
+      year: '2019 HL Q4',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Define "demand-pull inflation" and "cost-push inflation".' },
+        { label: 'b', marks: 6,  text: 'Explain how the Consumer Price Index (CPI) is used to measure inflation. State one limitation of the CPI.' },
+        { label: 'c', marks: 8,  text: 'Explain two negative economic effects of high inflation on the Irish economy.' },
+        { label: 'd', marks: 12, text: 'Evaluate the role of the European Central Bank (ECB) in controlling inflation in the eurozone. Discuss one advantage and two limitations of ECB monetary policy for Ireland.' },
+      ]
+    },
+    {
+      year: '2018 HL Q3',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Define "oligopoly" as a market structure.' },
+        { label: 'b', marks: 6,  text: 'Explain the concept of interdependence in an oligopoly. How does it affect pricing decisions?' },
+        { label: 'c', marks: 8,  text: 'Explain, with the aid of a diagram, the kinked demand curve model of oligopoly.' },
+        { label: 'd', marks: 12, text: 'Evaluate two methods of government regulation of monopoly power in Ireland. Consider the effectiveness of each method.' },
+      ]
+    },
+    {
+      year: '2017 HL Q2',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 4,  text: 'Distinguish between "actual economic growth" and "potential economic growth".' },
+        { label: 'b', marks: 6,  text: 'Explain two benefits of economic growth for the Irish economy. Give one real-world example.' },
+        { label: 'c', marks: 8,  text: 'Explain two costs or negative consequences of economic growth. Give a named example of each.' },
+        { label: 'd', marks: 12, text: 'Evaluate two supply-side policies that could be used to achieve sustainable long-run economic growth in Ireland.' },
+      ]
+    },
   ],
-  elasticity: [
-    {text:'Define price elasticity of demand (PED). Explain two factors that determine PED and give one example of a product with inelastic demand.',marks:20,hint:'Formula: % change QD / % change P. Factors: substitutes, necessity. Example: insulin, cigarettes.'},
-    {text:'Explain how a firm can use knowledge of PED in pricing decisions. Give one example.',marks:20,hint:'Inelastic demand: raise price, TR rises. Elastic demand: lower price, TR rises. Example from real market.'},
-    {text:'Define income elasticity of demand. Distinguish between a normal good and an inferior good using YED values.',marks:15,hint:'YED = % change QD / % change income. Positive YED = normal. Negative YED = inferior.'},
-    {text:'A firm reduces price by 10% and sales rise by 25%. Calculate PED and explain the implications for total revenue.',marks:20,hint:'PED = 25/10 = 2.5 (elastic). Lowering price increases total revenue when demand is elastic.'},
-    {text:'Explain why the price elasticity of supply of agricultural products tends to be inelastic in the short run.',marks:15,hint:'Growing seasons mean supply cannot adjust quickly. Fixed land and production cycles limit response.'},
-  ],
-  market_structures: [
-    {text:'Define monopoly. Explain two barriers to entry. Evaluate one argument for and one against monopoly.',marks:25,hint:'Definition. Two barriers: patents, economies of scale. For: R&D investment. Against: deadweight loss, high prices.'},
-    {text:'Distinguish between perfect competition and monopoly in terms of price, output, and efficiency.',marks:20,hint:'PC: P=MC, allocatively efficient, normal profit long run. Monopoly: P>MC, inefficient, supernormal profit.'},
-    {text:'Explain interdependence in an oligopoly. Describe the kinked demand curve model.',marks:20,hint:'Interdependence: rivals respond to your decisions. Kinked: rivals match cuts, ignore rises. Price rigidity.'},
-    {text:'Explain the profit-maximising condition MC=MR. Why would a firm not produce beyond this output?',marks:15,hint:'At MC=MR, profit is maximised. Beyond this each unit adds more to cost than to revenue. Profit falls.'},
-    {text:'Define allocative and productive efficiency. Does a monopoly achieve either?',marks:20,hint:'Allocative: P=MC. Productive: min AC. Monopoly: P>MC (not allocative), not at min AC (not productive).'},
-  ],
-  costs_revenue: [
-    {text:'Distinguish between fixed and variable costs. Explain with a diagram the relationship between marginal cost and average cost.',marks:20,hint:'FC: unchanged with output. VC: change with output. MC cuts AC at its minimum point.'},
-    {text:'Explain the law of diminishing marginal returns. How does it affect short-run costs?',marks:20,hint:'Variable factor added to fixed. MP eventually falls. Therefore MC rises in short run.'},
-    {text:'Define economies of scale. Name and explain two internal economies of scale.',marks:20,hint:'LRAC falls as output rises. Technical economies: bigger machines. Purchasing: bulk discounts.'},
-    {text:'Explain normal profit and how it affects long-run equilibrium in perfect competition.',marks:20,hint:'Normal profit = TR = TC including opportunity cost. Supernormal profit attracts entry. Competed away long run.'},
-    {text:'A firm has fixed costs of 500 euros and variable costs of 4 euros per unit. It sells 200 units at 8 euros each. Calculate total revenue, total costs, and profit.',marks:15,hint:'TR = 1600. TC = 500 + 800 = 1300. Profit = 300.'},
-  ],
-  market_failure: [
-    {text:'Define market failure. Explain with a diagram how a negative externality causes market failure and suggest one corrective policy.',marks:25,hint:'MPC less than MSC. Free market overproduces. Pigouvian tax shifts supply curve up to social optimum.'},
-    {text:'Distinguish between a public good and a merit good. Why does the free market underprovide each?',marks:20,hint:'Public: non-rival + non-excludable, free rider problem. Merit: individuals undervalue benefits.'},
-    {text:'Explain information asymmetry. Give one real-world example where it causes market failure.',marks:15,hint:'One party has more information. Adverse selection. Examples: used car market, health insurance.'},
-    {text:'Using a diagram, explain how a positive externality leads to underproduction and suggest a corrective policy.',marks:20,hint:'MPB less than MSB. Free market underproduces. Subsidy to close the gap to social optimum.'},
-    {text:'Evaluate the use of carbon taxes to address the negative externality of CO2 emissions.',marks:20,hint:'For: internalises externality, tax revenue, incentivises innovation. Against: regressive, rate hard to set, carbon leakage.'},
-  ],
-  govt_intervention: [
-    {text:'Explain two methods of government intervention to correct market failure. Evaluate the effectiveness of one method.',marks:20,hint:'Tax and subsidy or regulation. Evaluate one: advantages + limitations.'},
-    {text:'Explain how a price ceiling works. Use a diagram to show its effect. Give a real-world example.',marks:20,hint:'Set below equilibrium. Creates shortage. QD exceeds QS. Example: rent controls.'},
-    {text:'Explain how a price floor works. Use a diagram. Give a real-world example.',marks:20,hint:'Set above equilibrium. Creates surplus. QS exceeds QD. Example: minimum wage, EU agricultural prices.'},
-    {text:'Distinguish between government intervention to correct market failure and government failure.',marks:20,hint:'Intervention corrects failure. Government failure: intervention makes allocation worse. Example: poorly designed regulations.'},
-  ],
-  national_income: [
-    {text:'Distinguish between GDP, GNP, and GNI. Explain why GNI is a more accurate measure of Irish living standards than GDP.',marks:20,hint:'GDP = output within country. GNP = GDP + net factor income. GNI removes distortions from MNC profit repatriation.'},
-    {text:'Explain the circular flow of income. Name the three injections and three withdrawals.',marks:20,hint:'Households and firms. Injections: Investment, Government spending, Exports. Withdrawals: Savings, Tax, Imports.'},
-    {text:'What is the Keynesian multiplier? Explain how a rise in government spending leads to a larger rise in national income.',marks:20,hint:'Multiplier = 1 divided by (1 minus MPC). Chain of spending. Each round creates income for next round.'},
-    {text:'Explain the difference between actual and potential economic growth.',marks:15,hint:'Actual: real GDP increase using existing capacity. Potential: increase in productive capacity, LRAS shifts right.'},
-  ],
-  economic_growth: [
-    {text:'Define economic growth. Explain two benefits and two costs for an economy.',marks:20,hint:'Real GDP increase. Benefits: employment, living standards. Costs: inequality, environmental damage, inflation.'},
-    {text:'Distinguish between short-run and long-run economic growth. What policies achieve long-run growth?',marks:20,hint:'SR: AD increases. LR: AS and productive capacity increase. Policies: education, infrastructure, R&D investment.'},
-    {text:'Evaluate GDP per capita as a measure of living standards. Suggest two alternatives.',marks:20,hint:'Ignores inequality, environment, unpaid work. Alternatives: HDI, GNI per capita, wellbeing indices.'},
-  ],
-  inflation: [
-    {text:'Define inflation. Distinguish between demand-pull and cost-push inflation with an example of each.',marks:20,hint:'Sustained general price level rise. Demand-pull: excess AD. Cost-push: rising production costs.'},
-    {text:'Explain how inflation is measured using the CPI. Identify one limitation of the CPI.',marks:15,hint:'Weighted basket of goods and services. Track price changes over time. Limitation: basket may not represent all households.'},
-    {text:'Explain three negative economic effects of high inflation.',marks:15,hint:'Reduced purchasing power. Business uncertainty reduces investment. Redistributive effects: debtors gain, creditors lose.'},
-    {text:'Explain the relationship between inflation and unemployment using the Phillips curve.',marks:20,hint:'Short-run trade-off: lower unemployment associated with higher inflation. Long-run: vertical at natural rate.'},
-  ],
-  unemployment: [
-    {text:'Define unemployment. Distinguish between frictional, structural, and cyclical unemployment with an example of each.',marks:20,hint:'Three types. Each needs: definition, characteristic, and real-world example.'},
-    {text:'Explain two economic consequences of long-term unemployment for the individual and the economy.',marks:15,hint:'Individual: income loss, skill deterioration, health effects. Economy: lost output, welfare costs, hysteresis.'},
-    {text:'What is the natural rate of unemployment? Why is zero unemployment considered impossible?',marks:15,hint:'NRU = frictional + structural. Zero impossible: always people between jobs or in structural mismatch.'},
-    {text:'Evaluate two government policies to reduce structural unemployment in Ireland.',marks:20,hint:'Training and education schemes, regional policy. Evaluate each: effectiveness, cost, time taken, limitations.'},
-  ],
-  money_banking: [
-    {text:'Name and explain four functions of money. Why is the medium of exchange function most important?',marks:20,hint:'Medium of exchange, store of value, unit of account, standard of deferred payment. Most important: eliminates barter.'},
-    {text:'Explain the role of the ECB in the eurozone. Identify one limitation of ECB monetary policy for Ireland.',marks:20,hint:'ECB: sets interest rates, controls money supply, targets inflation. Limitation: one-size-fits-all, Ireland cannot adapt.'},
-    {text:'Explain how commercial banks create credit using the credit multiplier. Use a numerical example.',marks:20,hint:'Reserve ratio of 10%. Deposit of 1000. Multiplier = 10. Total credit = 10000. Show lending chain.'},
-    {text:'What is quantitative easing? When might a central bank use this policy?',marks:15,hint:'Central bank buys assets, increases money supply, lowers long-term rates. Used when interest rates near zero.'},
-  ],
-  fiscal_policy: [
-    {text:'Define fiscal policy. Distinguish between expansionary and contractionary fiscal policy and when each is appropriate.',marks:20,hint:'Government spending and taxation. Expansionary: recession. Contractionary: inflation or overheating economy.'},
-    {text:'Explain automatic stabilisers. Give two examples and explain how they stabilise the economy.',marks:20,hint:'No new decisions needed. Unemployment benefits rise in recession. Income tax falls as incomes fall.'},
-    {text:'Explain the crowding out effect. How does it limit expansionary fiscal policy?',marks:15,hint:'Government borrows more. Interest rates rise. Private investment falls. Net AD effect is reduced.'},
-    {text:'Evaluate the effectiveness of fiscal policy as a tool to manage the Irish economy.',marks:25,hint:'Advantages: multiplier effect, targeted spending. Disadvantages: time lags, EU Stability and Growth Pact rules, crowding out.'},
-  ],
-  monetary_policy: [
-    {text:'Explain how a rise in ECB interest rates affects the Irish economy. Use the transmission mechanism.',marks:20,hint:'Higher rates. Dearer borrowing. Lower consumption and investment. Lower AD. Lower inflation.'},
-    {text:'Evaluate monetary policy as a tool to control inflation in Ireland.',marks:20,hint:'Effective if demand-pull. But Ireland in eurozone. ECB policy may not suit Ireland. Time lags. Cannot target exchange rate.'},
-    {text:'Distinguish between fiscal policy and monetary policy. In what circumstances is each more effective?',marks:20,hint:'Fiscal: G and T. Monetary: interest rates and money supply. Fiscal better for structural issues and recession. Monetary for demand-pull inflation.'},
-  ],
-  trade: [
-    {text:'Explain the theory of comparative advantage. Use a numerical example to show how two countries benefit from trade.',marks:20,hint:'Opportunity cost comparison. Specialise where opportunity cost is lowest. Both countries gain from specialisation and trade.'},
-    {text:'Distinguish between a tariff and an import quota. Explain one argument for and one against protectionism.',marks:20,hint:'Tariff: tax on imports. Quota: quantity limit. For: infant industry. Against: higher consumer prices, retaliation.'},
-    {text:'Explain the role of the WTO in international trade. Why do countries still engage in protectionism?',marks:20,hint:'WTO: rules for trade, dispute resolution, most favoured nation principle. Protectionism: jobs, strategic industries, dumping.'},
-  ],
-  balance_payments: [
-    {text:'Define the balance of payments. Distinguish between the current account and the financial account.',marks:20,hint:'Record of all economic transactions with rest of world. Current: goods, services, income. Financial: investment and capital flows.'},
-    {text:'Explain what a current account deficit means. Identify two causes of a current account deficit.',marks:20,hint:'Imports exceed exports of goods, services, and income. Causes: uncompetitive exports, strong consumer spending, overvalued currency.'},
-    {text:'Explain the J-curve effect. Why might a depreciation initially worsen the current account?',marks:20,hint:'Import prices rise immediately. Export and import volumes slow to adjust. Deficit widens before improving over time.'},
-  ],
-  exchange_rates: [
-    {text:'Define an exchange rate. Distinguish between a floating and a fixed exchange rate system.',marks:20,hint:'Price of one currency in terms of another. Floating: market determined. Fixed: government or central bank maintains rate.'},
-    {text:'Explain how a depreciation of the euro would affect Irish exports and imports.',marks:20,hint:'Depreciation makes exports cheaper for foreigners. Demand rises. Imports become dearer. Import demand falls. Current account improves.'},
-    {text:'Explain purchasing power parity. Why is it used to compare living standards internationally?',marks:15,hint:'Exchange rates adjust so same goods cost same amount in each country. Used because market rates distort international comparisons.'},
-  ],
-  eu: [
-    {text:'Explain the four freedoms of the EU Single Market. Evaluate the benefits of Single Market membership for Ireland.',marks:25,hint:'Goods, services, capital, people. Benefits for Ireland: FDI, trade access, labour mobility. Evaluation: also EU constraints.'},
-    {text:'Explain the role of the ECB in EMU. Identify one advantage and one disadvantage of eurozone membership for Ireland.',marks:20,hint:'ECB: single monetary policy. Advantage: no exchange rate risk with trading partners. Disadvantage: no independent interest rates.'},
-    {text:'What is the Common Agricultural Policy? Evaluate its impact on farmers, consumers, and the environment.',marks:20,hint:'EU subsidies for farmers. Farmers benefit from income support. Consumers pay higher prices. Environmental concerns about intensive farming.'},
-  ],
-  development_econ: [
-    {text:'Define economic development. Distinguish between economic growth and economic development.',marks:15,hint:'Development is broader: HDI, health, education, quality of life, institutions. Growth is just real GDP increase.'},
-    {text:'Explain two obstacles to economic development in less developed countries.',marks:20,hint:'Vicious circle of poverty, low savings, poor infrastructure, political instability, trade barriers, debt burden.'},
-    {text:'Evaluate the effectiveness of foreign aid as a development strategy.',marks:20,hint:'For: capital, healthcare, education, emergency relief. Against: dependency, corruption, tied aid, debt sustainability.'},
-  ],
-  environmental_econ: [
-    {text:'Explain how environmental damage can be understood as a negative externality. What policies can governments use?',marks:20,hint:'MSC exceeds MPC. Free market overproduces. Policies: carbon tax, cap and trade, regulation, subsidies for alternatives.'},
-    {text:'Explain sustainable development. Identify two policies that promote it.',marks:20,hint:'Meeting present needs without compromising future generations. Policies: carbon pricing, renewable energy subsidies, environmental regulation.'},
-    {text:'Evaluate the use of a carbon tax to reduce CO2 emissions.',marks:20,hint:'For: creates price signal, raises revenue, encourages innovation. Against: regressive, difficult to set correctly, carbon leakage risk.'},
-  ],
+  OL: [
+    {
+      year: '2023 OL Q3',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "demand" in economics. State the law of demand.' },
+        { label: 'b', marks: 8,  text: 'Explain, using a diagram, what happens to the equilibrium price and quantity in the market for electric cars if consumer income increases. Assume electric cars are a normal good.' },
+        { label: 'c', marks: 7,  text: 'Explain two factors, other than price, that would cause the demand for a good to change.' },
+      ]
+    },
+    {
+      year: '2023 OL Q5',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "inflation". Name one method used to measure inflation in Ireland.' },
+        { label: 'b', marks: 8,  text: 'Distinguish between demand-pull inflation and cost-push inflation. Give one real-world example of each.' },
+        { label: 'c', marks: 7,  text: 'Explain two negative effects of high inflation on households in Ireland.' },
+      ]
+    },
+    {
+      year: '2022 OL Q2',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "monopoly". Give one real-world example of a monopoly.' },
+        { label: 'b', marks: 8,  text: 'Explain two barriers to entry that protect a monopoly from competition.' },
+        { label: 'c', marks: 7,  text: 'Explain two disadvantages of monopoly for consumers.' },
+      ]
+    },
+    {
+      year: '2022 OL Q4',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "unemployment". Name two types of unemployment.' },
+        { label: 'b', marks: 8,  text: 'Explain two economic effects of unemployment on the Irish economy.' },
+        { label: 'c', marks: 7,  text: 'Explain two government policies that could be used to reduce unemployment in Ireland.' },
+      ]
+    },
+    {
+      year: '2021 OL Q1',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "GDP" (Gross Domestic Product). Explain why economists use GNI rather than GDP to measure living standards in Ireland.' },
+        { label: 'b', marks: 8,  text: 'Explain the circular flow of income model. Name two injections and two withdrawals from the circular flow.' },
+        { label: 'c', marks: 7,  text: 'Explain two benefits of economic growth for the people of Ireland.' },
+      ]
+    },
+    {
+      year: '2021 OL Q3',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "price elasticity of demand" (PED). State the formula for PED.' },
+        { label: 'b', marks: 7,  text: 'Explain, with an example, what is meant by inelastic demand. Explain one factor that causes demand to be inelastic.' },
+        { label: 'c', marks: 8,  text: 'Explain why a government might choose to place a higher indirect tax on cigarettes than on fresh vegetables. Refer to price elasticity of demand in your answer.' },
+      ]
+    },
+    {
+      year: '2019 OL Q2',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "fiscal policy". Distinguish between expansionary and contractionary fiscal policy.' },
+        { label: 'b', marks: 7,  text: 'Explain two advantages of expansionary fiscal policy during a recession. Give one named example.' },
+        { label: 'c', marks: 8,  text: 'Explain two disadvantages or limitations of fiscal policy as a tool to manage the Irish economy.' },
+      ]
+    },
+    {
+      year: '2019 OL Q5',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "market failure". Give one example of market failure.' },
+        { label: 'b', marks: 8,  text: 'Explain, using an example, how a negative externality leads to market failure. What does this mean for the quantity produced?' },
+        { label: 'c', marks: 7,  text: 'Explain two methods a government can use to reduce the negative effects of market failure.' },
+      ]
+    },
+    {
+      year: '2018 OL Q3',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "international trade". State one advantage and one disadvantage of international trade for Ireland.' },
+        { label: 'b', marks: 7,  text: 'Explain the concept of comparative advantage. Why does it encourage countries to specialise and trade?' },
+        { label: 'c', marks: 8,  text: 'Explain two methods of protectionism. Explain one argument in favour of protecting domestic industries.' },
+      ]
+    },
+    {
+      year: '2018 OL Q4',
+      stem: 'Answer all parts.',
+      parts: [
+        { label: 'a', marks: 5,  text: 'Define "fixed costs" and "variable costs". Give one example of each.' },
+        { label: 'b', marks: 7,  text: 'Explain the law of diminishing marginal returns. How does this affect a firm\'s short-run costs?' },
+        { label: 'c', marks: 8,  text: 'Explain what is meant by the profit-maximising condition MC = MR. Explain two benefits to a firm of knowing this condition.' },
+      ]
+    },
+  ]
 };
 
-const TOPIC_LABELS = {
-  demand_supply:'Demand & Supply',elasticity:'Elasticity',market_structures:'Market Structures',
-  costs_revenue:'Costs & Revenue',market_failure:'Market Failure',govt_intervention:'Govt Intervention',
-  national_income:'National Income',economic_growth:'Economic Growth',inflation:'Inflation',
-  unemployment:'Unemployment',money_banking:'Money & Banking',fiscal_policy:'Fiscal Policy',
-  monetary_policy:'Monetary Policy',trade:'International Trade',balance_payments:'Balance of Payments',
-  exchange_rates:'Exchange Rates',eu:'The EU',development_econ:'Development',environmental_econ:'Environment',
-};
-
+// ============================================================
+// STATE
+// ============================================================
 const state = {
-  name:'',level:'HL',topic:'demand_supply',
-  turboData:null,totalStars:0,
-  currentQuestion:null,
-  attempts:[],firstVisit:true,usedQuestions:{},
+  name: '', level: 'HL',
+  turboData: null, totalStars: 0,
+  currentQ: null,
+  attempts: [], firstVisit: true, usedQs: {},
 };
 
-window.addEventListener('DOMContentLoaded',()=>{
-  const saved=localStorage.getItem('lc_econ_attempts');
-  if(saved)state.attempts=JSON.parse(saved);
-  if(localStorage.getItem('lc_econ_first_visit')==='no')state.firstVisit=false;
-  const uq=localStorage.getItem('lc_econ_used_questions');
-  if(uq)state.usedQuestions=JSON.parse(uq);
-  state.turboData=JSON.parse(localStorage.getItem('lc_econ_turbo_data')||'null');
-  state.totalStars=countStars();
-  const note=document.getElementById('turbo-note');
-  note.textContent=state.totalStars>0?'★ '+state.totalStars+' Turbo star'+(state.totalStars!==1?'s':'')+' — noted.':'Play Turbo first to earn stars.';
-  const n=localStorage.getItem('lc_econ_name');
-  const lv=localStorage.getItem('lc_econ_level');
-  const tp=localStorage.getItem('lc_econ_topic');
-  if(n)document.getElementById('inp-name').value=n;
-  if(lv){document.querySelectorAll('[data-level]').forEach(b=>{if(b.dataset.level===lv){b.classList.add('selected');state.level=lv;}});}
-  if(tp){state.topic=tp;document.getElementById('inp-topic').value=tp;}
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('lc_econ_attempts');
+  if (saved) state.attempts = JSON.parse(saved);
+  if (localStorage.getItem('lc_econ_first_visit') === 'no') state.firstVisit = false;
+  const uq = localStorage.getItem('lc_econ_used_qs');
+  if (uq) state.usedQs = JSON.parse(uq);
+  state.turboData = JSON.parse(localStorage.getItem('lc_econ_turbo_data') || 'null');
+  state.totalStars = countStars();
+
+  const note = document.getElementById('turbo-note');
+  note.textContent = state.totalStars > 0
+    ? '⭐ ' + state.totalStars + ' Turbo star' + (state.totalStars !== 1 ? 's' : '') + ' — noted.'
+    : 'Play Turbo first to warm up.';
+
+  const n = localStorage.getItem('lc_econ_name');
+  const lv = localStorage.getItem('lc_econ_level');
+  if (n) document.getElementById('inp-name').value = n;
+  if (lv) {
+    document.querySelectorAll('[data-level]').forEach(b => {
+      if (b.dataset.level === lv) { b.classList.add('selected'); state.level = lv; }
+    });
+  }
 });
 
-function countStars(){
-  if(!state.turboData)return 0;
-  let t=0;
-  Object.values(state.turboData).forEach(cat=>{Object.values(cat.levels||{}).forEach(s=>{t+=parseInt(s)||0;});});
+function countStars() {
+  if (!state.turboData) return 0;
+  let t = 0;
+  Object.values(state.turboData).forEach(cat => {
+    Object.values(cat.levels || {}).forEach(s => { t += parseInt(s) || 0; });
+  });
   return t;
 }
 
-function selectLevel(btn){
-  document.querySelectorAll('[data-level]').forEach(b=>b.classList.remove('selected'));
+// ============================================================
+// WELCOME
+// ============================================================
+function selectLevel(btn) {
+  document.querySelectorAll('[data-level]').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  state.level=btn.dataset.level;
+  state.level = btn.dataset.level;
 }
 
-function enterCousin(){
-  const name=document.getElementById('inp-name').value.trim();
-  if(!name){document.getElementById('inp-name').focus();return;}
-  if(!state.level){alert('Pick HL or OL.');return;}
-  state.name=name;
-  state.topic=document.getElementById('inp-topic').value;
-  localStorage.setItem('lc_econ_name',name);
-  localStorage.setItem('lc_econ_level',state.level);
-  localStorage.setItem('lc_econ_topic',state.topic);
+function enterCousin() {
+  const name = document.getElementById('inp-name').value.trim();
+  if (!name) { document.getElementById('inp-name').focus(); return; }
+  if (!state.level) { alert('Pick HL or OL.'); return; }
+  state.name = name;
+  localStorage.setItem('lc_econ_name', name);
+  localStorage.setItem('lc_econ_level', state.level);
   showReveal();
 }
 
-function showReveal(){
-  const msgs={
-    HL:[state.name+'. Higher Level. Right.','That means definition, explanation, example, analysis, and evaluation.\n\nNot just a definition. The full thing.\n\nLet\'s see it.'+(state.totalStars>0?'\n\n'+state.totalStars+' Turbo star'+(state.totalStars!==1?'s':'')+'. Good. Now apply it.':'')],
-    OL:[state.name+'. Ordinary Level. Good.','Clear definitions and concrete examples. That\'s what OL rewards.\n\nGet those right and the marks follow.'+(state.totalStars>0?'\n\n'+state.totalStars+' Turbo star'+(state.totalStars!==1?'s':'')+'. Good. Now apply it.':'')],
+// ============================================================
+// REVEAL
+// ============================================================
+function showReveal() {
+  const msgs = {
+    HL: [state.name + '. Higher Level. Right.',
+         'That means the full thing — definition, explanation, example, analysis, evaluation.\n\nNot a direction. An answer.\n\nLet\'s see it.' + (state.totalStars > 0 ? '\n\n' + state.totalStars + ' Turbo star' + (state.totalStars !== 1 ? 's' : '') + '. Good.' : '')],
+    OL: [state.name + '. Ordinary Level. Good.',
+         'Clear definitions. Specific named examples. Show your working.\n\nThat\'s what the marks go to.' + (state.totalStars > 0 ? '\n\n' + state.totalStars + ' Turbo star' + (state.totalStars !== 1 ? 's' : '') + '. Let\'s put them to use.' : '')],
   };
-  const m=msgs[state.level]||msgs['HL'];
-  document.getElementById('reveal-text').textContent=m[0];
-  document.getElementById('reveal-sub').textContent=m[1];
+  const m = msgs[state.level] || msgs['HL'];
+  document.getElementById('reveal-text').textContent = m[0];
+  document.getElementById('reveal-sub').textContent = m[1];
   showScreen('screen-reveal');
 }
 
-function goToExam(){
-  document.getElementById('header-sub').textContent=state.level+' · '+(TOPIC_LABELS[state.topic]||state.topic);
+function goToExam() {
+  document.getElementById('header-sub').textContent = state.level + ' · Past exam questions';
   showScreen('screen-exam');
-  buildTopicBar();
-  document.getElementById('exam-body').innerHTML='';
+  document.getElementById('exam-body').innerHTML = '';
   openingGreeting();
 }
 
-function buildTopicBar(){
-  const bar=document.getElementById('topic-bar');
-  bar.innerHTML='';
-  Object.keys(QUESTIONS).filter(k=>QUESTIONS[k]&&QUESTIONS[k].length>0).forEach(key=>{
-    const btn=document.createElement('button');
-    btn.className='topic-pill'+(key===state.topic?' active':'');
-    btn.textContent=TOPIC_LABELS[key]||key;
-    btn.onclick=()=>{
-      state.topic=key;
-      document.querySelectorAll('.topic-pill').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('exam-body').innerHTML='';
-      addCMsg('Right. '+(TOPIC_LABELS[key]||key)+'.');
-      setTimeout(()=>giveQuestion(key),400);
-    };
-    bar.appendChild(btn);
-  });
-}
-
-function openingGreeting(){
-  let msg='';
-  if(state.firstVisit){
-    msg='Right, '+state.name+'. LC Economics '+state.level+'.\n\nI give you a real exam question. You write your answer in full. I mark it against the LC Economics marking scheme.\n\n'+
-    (state.level==='HL'?'HL means definition, explanation, named example, analysis, and evaluation. Diagrams where required.':'OL means a precise definition, a clear explanation, and a specific named real-world example.')+'\n\nFirst one: '+(TOPIC_LABELS[state.topic]||state.topic)+'.';
-    localStorage.setItem('lc_econ_first_visit','no');
-    state.firstVisit=false;
-  }else if(state.attempts.length>0){
-    const last=state.attempts[state.attempts.length-1];
-    const pct=Math.round((last.score/last.maxMarks)*100);
-    msg=state.name+'. Last time: '+last.score+'/'+last.maxMarks+' ('+pct+'%). '+state.attempts.length+' attempt'+(state.attempts.length!==1?'s':'')+' in.\n\n'+(TOPIC_LABELS[state.topic]||state.topic)+' today.';
-  }else{
-    msg=state.name+'. Good. '+(TOPIC_LABELS[state.topic]||state.topic)+'.';
+// ============================================================
+// OPENING
+// ============================================================
+function openingGreeting() {
+  let msg = '';
+  if (state.firstVisit) {
+    msg = 'Right, ' + state.name + '. Here\'s how this works.\n\nI give you a real LC Economics exam question — off the actual paper, the year is on it. You answer each part. I mark it against the SEC marking scheme, part by part.\n\n' +
+      (state.level === 'HL' ? 'Higher Level means I\'ll be expecting definition, explanation, specific named example, analysis, and evaluation. And diagrams when required.' : 'Ordinary Level means precise definitions, clear explanations, and specific named examples. No waffle.') +
+      '\n\nHere\'s your first one.';
+    localStorage.setItem('lc_econ_first_visit', 'no');
+    state.firstVisit = false;
+  } else if (state.attempts.length > 0) {
+    const last = state.attempts[state.attempts.length - 1];
+    const pct = Math.round((last.total / last.maxTotal) * 100);
+    msg = state.name + '. Last time: ' + last.total + '/' + last.maxTotal + ' (' + pct + '%). ' + state.attempts.length + ' attempt' + (state.attempts.length !== 1 ? 's' : '') + ' in. Here\'s the next one.';
+  } else {
+    msg = state.name + '. Good. Here\'s your first question — it\'s off the actual paper.';
   }
   addCMsg(msg);
-  setTimeout(()=>giveQuestion(state.topic),600);
+  setTimeout(() => giveQuestion(), 500);
 }
 
-function getNextQuestion(topic){
-  const pool=QUESTIONS[topic]||[];
-  if(!pool.length)return null;
-  if(!state.usedQuestions[topic])state.usedQuestions[topic]=[];
-  if(state.usedQuestions[topic].length>=pool.length)state.usedQuestions[topic]=[];
-  const available=pool.map((_,i)=>i).filter(i=>!state.usedQuestions[topic].includes(i));
-  const idx=available[Math.floor(Math.random()*available.length)];
-  state.usedQuestions[topic].push(idx);
-  localStorage.setItem('lc_econ_used_questions',JSON.stringify(state.usedQuestions));
+// ============================================================
+// QUESTION
+// ============================================================
+function getNextQ() {
+  const pool = QUESTIONS[state.level] || [];
+  if (!state.usedQs[state.level]) state.usedQs[state.level] = [];
+  if (state.usedQs[state.level].length >= pool.length) state.usedQs[state.level] = [];
+  const available = pool.map((_, i) => i).filter(i => !state.usedQs[state.level].includes(i));
+  const idx = available[Math.floor(Math.random() * available.length)];
+  state.usedQs[state.level].push(idx);
+  localStorage.setItem('lc_econ_used_qs', JSON.stringify(state.usedQs));
   return pool[idx];
 }
 
-function giveQuestion(topic){
-  const q=getNextQuestion(topic);
-  if(!q)return;
-  state.currentQuestion={...q,topic};
-  const body=document.getElementById('exam-body');
-  const card=document.createElement('div');
-  card.className='question-card';
-  card.innerHTML='<div class="q-label"><span>LC Economics &mdash; '+state.level+'</span><span class="q-marks">'+q.marks+' marks</span></div>'+
-    '<div class="q-topic-tag">'+(TOPIC_LABELS[topic]||topic)+'</div>'+
-    '<div class="q-text">'+escHtml(q.text)+'</div>';
+function giveQuestion() {
+  const q = getNextQ();
+  if (!q) return;
+  state.currentQ = q;
+  const body = document.getElementById('exam-body');
+  const totalMarks = q.parts.reduce((s, p) => s + p.marks, 0);
+
+  const card = document.createElement('div');
+  card.className = 'question-card';
+  card.id = 'question-card';
+
+  let html = '<div class="q-meta"><span>LC Economics &mdash; ' + state.level + '</span><span class="q-year-badge">' + escHtml(q.year) + ' &middot; ' + totalMarks + 'm</span></div>';
+  if (q.stem) html += '<div class="q-stem">' + escHtml(q.stem) + '</div>';
+
+  q.parts.forEach((p, i) => {
+    html += '<div class="q-part" id="part-' + i + '">' +
+      '<div class="q-part-header"><span class="q-part-label">(' + p.label + ')</span><span class="q-part-marks">' + p.marks + ' marks</span></div>' +
+      '<div class="q-part-text">' + escHtml(p.text) + '</div>' +
+      '<textarea class="write-ta" id="ta-' + i + '" placeholder="Your answer..." rows="' + Math.max(3, Math.ceil(p.marks / 3)) + '" oninput="updateWC(' + i + ')"></textarea>' +
+      '<div class="wc-label" id="wc-' + i + '">0 words</div>' +
+      '</div>';
+  });
+
+  html += '<div class="submit-row"><button class="submit-btn" type="button" id="sub-btn" onclick="submitAnswer()">Submit for marking &rarr;</button></div>';
+  card.innerHTML = html;
   body.appendChild(card);
-  if(q.hint)addCMsg('Structure: '+q.hint);
-  const zone=document.createElement('div');
-  zone.className='write-zone';zone.id='write-zone';
-  zone.innerHTML='<div class="write-label"><span>Your exam answer</span><span class="word-count" id="wc">0 words</span></div>'+
-    '<textarea class="write-ta" id="write-ta" placeholder="Write your answer in full exam style..." oninput="updateWC()"></textarea>'+
-    '<div class="write-footer"><button class="submit-btn" type="button" id="sub-btn" onclick="submitAnswer()">Submit for marking &rarr;</button></div>';
-  body.appendChild(zone);
   scrollBottom();
 }
 
-function updateWC(){
-  const t=document.getElementById('write-ta').value.trim();
-  const w=t?t.split(/\s+/).length:0;
-  document.getElementById('wc').textContent=w+' word'+(w!==1?'s':'');
+function updateWC(idx) {
+  const ta = document.getElementById('ta-' + idx);
+  if (!ta) return;
+  const w = ta.value.trim() ? ta.value.trim().split(/\s+/).length : 0;
+  const el = document.getElementById('wc-' + idx);
+  if (el) el.textContent = w + ' word' + (w !== 1 ? 's' : '');
 }
 
-async function submitAnswer(){
-  const answer=document.getElementById('write-ta').value.trim();
-  if(!answer||answer.split(/\s+/).length<5){addCMsg('Write more — even a few sentences gives me something to work with.');return;}
-  document.getElementById('write-ta').disabled=true;
-  document.getElementById('sub-btn').disabled=true;
-  const typing=addTyping();
-  try{
-    const prevAttempts=state.attempts.filter(a=>a.topic===state.currentQuestion.topic);
-    const prevScore=prevAttempts.length>0?prevAttempts[prevAttempts.length-1].score:null;
-    const res=await fetch(WORKER_URL,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        mode:'econ_mark',name:state.name,level:state.level,
-        topic:state.currentQuestion.topic,
-        question_stem:state.currentQuestion.text,
-        total_marks:state.currentQuestion.marks,
-        answer,turbo_summary:buildTurboSummary(),
-        attempt_number:state.attempts.length+1,
-        previous_score:prevScore,
-        all_attempts:state.attempts.filter(a=>a.topic===state.currentQuestion.topic),
+// ============================================================
+// SUBMIT
+// ============================================================
+async function submitAnswer() {
+  const parts = state.currentQ.parts.map((p, i) => ({
+    label: p.label, marks: p.marks, text: p.text,
+    answer: (document.getElementById('ta-' + i) || {}).value || '',
+  }));
+  const hasContent = parts.some(p => p.answer.trim().split(/\s+/).length >= 3);
+  if (!hasContent) {
+    addCMsg('Write something in at least one part — even a few words. That\'s marks.');
+    return;
+  }
+
+  // Disable all textareas and submit button
+  state.currentQ.parts.forEach((_, i) => {
+    const ta = document.getElementById('ta-' + i);
+    if (ta) ta.disabled = true;
+  });
+  const subBtn = document.getElementById('sub-btn');
+  if (subBtn) subBtn.disabled = true;
+
+  const typing = addTyping();
+  const totalMarks = state.currentQ.parts.reduce((s, p) => s + p.marks, 0);
+  const prevAttempts = state.attempts.filter(a => a.year === state.currentQ.year);
+  const prevTotal = prevAttempts.length > 0 ? prevAttempts[prevAttempts.length - 1].total : null;
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mode: 'econ_mark',
+        name: state.name,
+        level: state.level,
+        question_stem: state.currentQ.parts.map(p => '(' + p.label + ') ' + p.text).join(' | '),
+        year: state.currentQ.year,
+        parts,
+        turbo_summary: buildTurboSummary(),
+        attempt_number: state.attempts.length + 1,
+        previous_total: prevTotal,
+        all_attempts: prevAttempts,
       })
     });
-    const data=await res.json();
+    const data = await res.json();
     removeTyping(typing);
-    if(data.mark)showMark(data.mark);
-    else addCMsg('Something went wrong. Try again.');
-  }catch(e){removeTyping(typing);addCMsg('Connection lost. Check your signal.');}
+    if (data.mark) showMark(data.mark, totalMarks);
+    else addCMsg('Something went wrong with the marking. Try submitting again.');
+  } catch(e) {
+    removeTyping(typing);
+    addCMsg('Lost the connection. Check your signal and try again.');
+  }
 }
 
-function showMark(mark){
-  const body=document.getElementById('exam-body');
-  state.attempts.push({topic:state.currentQuestion.topic,topicLabel:TOPIC_LABELS[state.currentQuestion.topic]||state.currentQuestion.topic,score:mark.score,maxMarks:mark.max_marks,date:new Date().toLocaleDateString('en-IE')});
-  localStorage.setItem('lc_econ_attempts',JSON.stringify(state.attempts.slice(-30)));
-  const pct=Math.round((mark.score/mark.max_marks)*100);
-  const barColor=pct>=70?'#166534':pct>=50?'#b45309':'#c0392b';
-  const mc=document.createElement('div');mc.className='mark-card';
-  mc.innerHTML='<div class="mark-label">Your marks</div><div class="mark-score-row"><div><span class="mark-score-big" style="color:'+barColor+'">'+mark.score+'</span><span class="mark-score-max">/'+mark.max_marks+'</span></div><div class="mark-bar-wrap"><div class="mark-bar-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div></div><div class="mark-feedback">'+formatFeedback(mark.feedback)+'</div>';
-  body.appendChild(mc);
-  if(mark.model_answer){
-    const mod=document.createElement('div');mod.className='model-card';
-    mod.innerHTML='<div class="model-label">&#128221; Model Answer &mdash; Full Marks</div><div class="model-intro">What the examiner wants to see. Study the structure: definition, explanation, named example, analysis'+(state.level==='HL'?', evaluation':'')+'.</div><div class="model-text">'+formatModelAnswer(mark.model_answer)+'</div>';
+// ============================================================
+// SHOW MARK
+// ============================================================
+function showMark(mark, totalMarks) {
+  const body = document.getElementById('exam-body');
+
+  state.attempts.push({
+    year: state.currentQ.year,
+    total: mark.total,
+    maxTotal: totalMarks,
+    date: new Date().toLocaleDateString('en-IE'),
+  });
+  localStorage.setItem('lc_econ_attempts', JSON.stringify(state.attempts.slice(-30)));
+
+  const pct = Math.round((mark.total / totalMarks) * 100);
+  const barColor = pct >= 70 ? '#166534' : pct >= 50 ? '#b45309' : '#c0392b';
+
+  // Part scores grid
+  const markCard = document.createElement('div');
+  markCard.className = 'mark-card';
+  let html = '<div class="mark-label">Your marks — part by part</div>';
+
+  if (mark.part_scores && mark.part_scores.length > 0) {
+    html += '<div class="parts-grid">';
+    state.currentQ.parts.forEach((p, i) => {
+      const ps = mark.part_scores[i] || 0;
+      const partPct = Math.round((ps / p.marks) * 100);
+      const col = partPct >= 70 ? '#166534' : partPct >= 50 ? '#b45309' : '#c0392b';
+      html += '<div class="part-score-pill"><div class="part-score-label">Part (' + p.label + ')</div>' +
+        '<div class="part-score-val" style="color:' + col + '">' + ps + '</div>' +
+        '<div class="part-score-max">/' + p.marks + '</div></div>';
+    });
+    html += '</div>';
+  }
+
+  html += '<div class="mark-total-bar" style="background:' + barColor + '">' +
+    '<div class="mark-total-num">' + mark.total + '<span style="font-size:1rem;opacity:0.7">/' + totalMarks + '</span></div>' +
+    '<div class="mark-total-sub">' + pct + '% &mdash; ' + gradeEq(pct) + '</div></div>';
+  html += '<div class="mark-feedback">' + formatFeedback(mark.feedback) + '</div>';
+  markCard.innerHTML = html;
+  body.appendChild(markCard);
+
+  // Model answer
+  if (mark.model_answer) {
+    const mod = document.createElement('div');
+    mod.className = 'model-card';
+    mod.innerHTML = '<div class="model-label">&#128221; Model Answer &mdash; Full Marks</div>' +
+      '<div class="model-intro">What the examiner wants to see, part by part. Study the structure — especially where the marks are awarded.</div>' +
+      '<div class="model-text">' + formatModelAnswer(mark.model_answer) + '</div>';
     body.appendChild(mod);
   }
-  if(mark.prescription){
-    const pr=document.createElement('div');pr.className='prescription';
-    pr.innerHTML='<div class="presc-label">&#127919; Prescription</div><div class="presc-text">'+escHtml(mark.prescription)+'</div>'+(mark.turbo_needed?'<a class="turbo-link" href="lc-economics-turbo.html">Go to Turbo &rarr;</a>':'');
+
+  // Prescription
+  if (mark.prescription) {
+    const pr = document.createElement('div');
+    pr.className = 'prescription';
+    pr.innerHTML = '<div class="presc-label">&#127919; Prescription</div>' +
+      '<div class="presc-text">' + escHtml(mark.prescription) + '</div>' +
+      (mark.turbo_needed ? '<a class="turbo-link" href="lc-economics-turbo.html">Go to Turbo &rarr;</a>' : '');
     body.appendChild(pr);
   }
-  if(mark.grade_prediction&&mark.grade_prediction.grade){
-    const gp=document.createElement('div');gp.className='c-msg';
-    gp.innerHTML='<div class="c-av">&#127891;</div><div class="c-bub"><p><strong>Grade Prediction: '+escHtml(mark.grade_prediction.grade)+'</strong>'+(mark.grade_prediction.trend?' ('+escHtml(mark.grade_prediction.trend)+')':'')+'</p>'+(mark.grade_prediction.message?'<p>'+escHtml(mark.grade_prediction.message)+'</p>':'')+'</div>';
+
+  // Grade prediction
+  if (mark.grade_prediction && mark.grade_prediction.grade) {
+    const gp = document.createElement('div');
+    gp.className = 'c-msg';
+    gp.innerHTML = '<div class="c-av">&#127891;</div><div class="c-bub"><p><strong>Grade Prediction: ' +
+      escHtml(mark.grade_prediction.grade) + '</strong>' +
+      (mark.grade_prediction.trend ? ' (' + escHtml(mark.grade_prediction.trend) + ')' : '') +
+      '</p>' + (mark.grade_prediction.message ? '<p>' + escHtml(mark.grade_prediction.message) + '</p>' : '') + '</div>';
     body.appendChild(gp);
   }
-  const actions=document.createElement('div');actions.className='action-row';
-  actions.innerHTML='<button class="action-btn primary" type="button" onclick="nextQuestion()">Next question &rarr;</button><button class="action-btn" type="button" onclick="showScreen(\'screen-progress\')">&#128200; Progress</button>';
+
+  // Actions
+  const actions = document.createElement('div');
+  actions.className = 'action-row';
+  actions.innerHTML = '<button class="action-btn primary" type="button" onclick="nextQuestion()">Next question &rarr;</button>' +
+    '<button class="action-btn" type="button" onclick="showScreen(\'screen-progress\')">&#128200; Progress</button>';
   body.appendChild(actions);
   scrollBottom();
 }
 
-function nextQuestion(){
-  document.getElementById('exam-body').innerHTML='';
-  addCMsg('Right. Next one. '+(TOPIC_LABELS[state.topic]||state.topic)+'.');
-  setTimeout(()=>giveQuestion(state.topic),400);
+function gradeEq(pct) {
+  if (pct >= 90) return 'H1 territory';
+  if (pct >= 80) return 'H2 territory';
+  if (pct >= 70) return 'H3 territory';
+  if (pct >= 60) return 'H4 territory';
+  if (pct >= 50) return 'H5 territory';
+  return 'Keep working';
 }
 
-function renderProgress(){
-  const body=document.getElementById('prog-body');body.innerHTML='';
-  if(!state.attempts.length){body.innerHTML='<p style="color:var(--muted);font-size:0.88rem;text-align:center;padding:20px">No attempts yet.</p>';return;}
-  [...state.attempts].reverse().forEach((a,i)=>{
-    const num=state.attempts.length-i;
-    const pct=Math.round((a.score/a.maxMarks)*100);
-    const row=document.createElement('div');row.className='att-row';
-    row.innerHTML='<div class="att-num">#'+num+'</div><div class="att-info"><div class="att-topic-lbl">'+escHtml(a.topicLabel)+'</div><div class="att-meta">'+a.date+' &middot; '+state.level+'</div></div><div class="att-score">'+a.score+'<span style="font-size:0.7rem;color:var(--muted)">/'+a.maxMarks+'</span></div>';
+function nextQuestion() {
+  document.getElementById('exam-body').innerHTML = '';
+  addCMsg('Right. Next one — another real paper question.');
+  setTimeout(() => giveQuestion(), 400);
+}
+
+// ============================================================
+// PROGRESS
+// ============================================================
+function renderProgress() {
+  const body = document.getElementById('prog-body');
+  body.innerHTML = '';
+  if (!state.attempts.length) {
+    body.innerHTML = '<p style="color:var(--muted);font-size:0.88rem;text-align:center;padding:20px">No attempts yet — go answer something.</p>';
+    return;
+  }
+  [...state.attempts].reverse().forEach((a, i) => {
+    const num = state.attempts.length - i;
+    const pct = Math.round((a.total / a.maxTotal) * 100);
+    const row = document.createElement('div');
+    row.className = 'att-row';
+    row.innerHTML = '<div class="att-num">#' + num + '</div>' +
+      '<div class="att-info"><div class="att-q">' + escHtml(a.year) + '</div>' +
+      '<div class="att-meta">' + a.date + ' &middot; ' + state.level + ' &middot; ' + pct + '%</div></div>' +
+      '<div class="att-score">' + a.total + '<span style="font-size:0.7rem;color:var(--muted)">/' + a.maxTotal + '</span></div>';
     body.appendChild(row);
   });
 }
 
-function addTyping(){
-  const body=document.getElementById('exam-body');
-  const w=document.createElement('div');w.className='c-msg';w.id='typing-el';
-  const av=document.createElement('div');av.className='c-av';av.textContent='🎓';
-  const bub=document.createElement('div');bub.className='typing-ind';
-  bub.innerHTML='<div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>';
-  w.appendChild(av);w.appendChild(bub);body.appendChild(w);scrollBottom();return w;
+// ============================================================
+// TYPING
+// ============================================================
+function addTyping() {
+  const body = document.getElementById('exam-body');
+  const w = document.createElement('div'); w.className = 'c-msg'; w.id = 'typing-el';
+  const av = document.createElement('div'); av.className = 'c-av'; av.textContent = '🎓';
+  const bub = document.createElement('div'); bub.className = 'typing-ind';
+  bub.innerHTML = '<div class="t-dot"></div><div class="t-dot"></div><div class="t-dot"></div>';
+  w.appendChild(av); w.appendChild(bub); body.appendChild(w);
+  scrollBottom(); return w;
 }
-function removeTyping(el){if(el&&el.parentNode)el.parentNode.removeChild(el);}
+function removeTyping(el) { if (el && el.parentNode) el.parentNode.removeChild(el); }
 
-function addCMsg(text){
-  const body=document.getElementById('exam-body');
-  const w=document.createElement('div');w.className='c-msg';
-  const av=document.createElement('div');av.className='c-av';av.textContent='🎓';
-  const bub=document.createElement('div');bub.className='c-bub';
-  bub.innerHTML='<p>'+escHtml(text).replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>';
-  w.appendChild(av);w.appendChild(bub);body.appendChild(w);scrollBottom();
+function addCMsg(text) {
+  const body = document.getElementById('exam-body');
+  const w = document.createElement('div'); w.className = 'c-msg';
+  const av = document.createElement('div'); av.className = 'c-av'; av.textContent = '🎓';
+  const bub = document.createElement('div'); bub.className = 'c-bub';
+  bub.innerHTML = '<p>' + escHtml(text).replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+  w.appendChild(av); w.appendChild(bub); body.appendChild(w);
+  scrollBottom();
 }
 
-function buildTurboSummary(){
-  if(!state.turboData)return 'No Turbo data.';
-  return Object.entries(state.turboData).map(([cat,d])=>{
-    const stars=Object.values(d.levels||{}).reduce((a,b)=>a+b,0);
-    return (d.label||cat)+': '+stars+' stars';
+// ============================================================
+// UTILS
+// ============================================================
+function buildTurboSummary() {
+  if (!state.turboData) return 'No Turbo data.';
+  return Object.entries(state.turboData).map(([cat, d]) => {
+    const stars = Object.values(d.levels || {}).reduce((a, b) => a + b, 0);
+    return (d.label || cat) + ': ' + stars + ' stars';
   }).join(' | ');
 }
-function formatFeedback(text){if(!text)return '';return '<p>'+escHtml(text).replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')+'</p>';}
-function formatModelAnswer(text){
-  if(!text)return '';
-  let e=escHtml(text);
-  e=e.replace(/\[NOTE:\s*(.*?)\]/g,'<span class="model-note">&#128161; $1</span>');
-  return e.replace(/\n/g,'<br>');
+
+function formatFeedback(text) {
+  if (!text) return '';
+  return '<p>' + escHtml(text).replace(/\n\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
 }
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+
+function formatModelAnswer(text) {
+  if (!text) return '';
+  let e = escHtml(text);
+  e = e.replace(/\[NOTE:\s*(.*?)\]/g, '<span class="model-note">&#128161; $1</span>');
+  return e.replace(/\n/g, '<br>');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  if(id==='screen-progress')renderProgress();
+  if (id === 'screen-progress') renderProgress();
 }
-function scrollBottom(){const b=document.getElementById('exam-body');if(b)setTimeout(()=>{b.scrollTop=b.scrollHeight;},60);}
-function escHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');}
+
+function scrollBottom() {
+  const b = document.getElementById('exam-body');
+  if (b) setTimeout(() => { b.scrollTop = b.scrollHeight; }, 60);
+}
+
+function escHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
 </script>
 </body>
 </html>
