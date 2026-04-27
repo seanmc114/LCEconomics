@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <title>Turbo Economics — LC Economics Drill</title>
+  <style>
+    :root {
+      --econ: #1e3a5f; --econ2: #2d5f9e; --paper: #fafaf8; --aged: #f0ede4;
+      --gold: #b45309; --red: #c0392b; --muted: #78716c; --border: #d6d3c4;
+      --green: #166534; --green-light: #dcfce7; --ink: #1c1917;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--paper); min-height: 100vh; color: var(--ink); }
+
+    /* SCREENS */
+    .screen { display: none; }
+    .screen.active { display: flex; }
+
+    /* WELCOME */
+    #screen-welcome { min-height: 100vh; background: var(--econ); padding: 30px 20px; justify-content: center; align-items: center; }
+    .welcome-inner { max-width: 480px; width: 100%; text-align: center; }
+    .turbo-logo { font-size: 4.5rem; font-weight: 900; color: white; letter-spacing: -2px; font-style: italic; margin-bottom: 2px; }
+    .turbo-sub { color: rgba(255,255,255,0.38); font-size: 0.75rem; letter-spacing: 2.5px; text-transform: uppercase; margin-bottom: 28px; }
+    .progress-wrap { margin-bottom: 14px; }
+    .progress-label { display: flex; justify-content: space-between; font-size: 0.7rem; color: rgba(255,255,255,0.45); margin-bottom: 5px; }
+    .progress-track { background: rgba(255,255,255,0.1); border-radius: 50px; height: 7px; }
+    .progress-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, #3b82f6, #93c5fd); transition: width 0.4s; }
+    .star-banner { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 10px 14px; margin-bottom: 18px; color: rgba(255,255,255,0.6); font-size: 0.82rem; }
+    #cat-buttons { display: flex; flex-wrap: wrap; gap: 5px; justify-content: center; margin-bottom: 16px; }
+    .cat-btn { background: rgba(255,255,255,0.07); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; color: rgba(255,255,255,0.5); font-size: 0.74rem; font-weight: 700; padding: 5px 12px; cursor: pointer; transition: all 0.2s; }
+    .cat-btn:hover { border-color: rgba(255,255,255,0.35); color: white; }
+    .cat-btn.active { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.5); color: white; }
+    #level-list { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
+    .zone-label { font-size: 0.62rem; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin: 8px 0 2px; }
+    .level-btn { background: rgba(255,255,255,0.09); border: 2px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; font-size: 0.9rem; font-weight: 700; padding: 12px 16px; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center; text-align: left; }
+    .level-btn:hover:not(:disabled) { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.3); }
+    .level-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .level-btn.hl-zone { border-color: rgba(212,175,55,0.35); }
+    .level-badge { font-size: 0.72rem; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 8px; flex-shrink: 0; }
+    .cousin-btn { background: linear-gradient(135deg, rgba(30,58,95,0.9), rgba(45,95,158,0.9)) !important; border: 2px solid rgba(255,255,255,0.35) !important; justify-content: center !important; margin-top: 8px; }
+    footer { color: rgba(255,255,255,0.15); font-size: 0.64rem; margin-top: 16px; }
+
+    /* GAME */
+    #screen-game { min-height: 100vh; flex-direction: column; max-width: 640px; margin: 0 auto; width: 100%; }
+    .game-hdr { background: var(--econ); padding: 11px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .back-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.65); font-size: 0.72rem; font-weight: 700; padding: 5px 11px; border-radius: 6px; cursor: pointer; }
+    .game-hdr h2 { font-size: 0.88rem; color: white; flex: 1; line-height: 1.3; }
+    #timer { font-size: 1.1rem; font-weight: 900; color: white; flex-shrink: 0; }
+    .game-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .q-item { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 13px 15px; }
+    .q-prompt { font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; line-height: 1.45; color: var(--ink); }
+    .q-input { width: 100%; border: 2px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 0.9rem; outline: none; font-family: inherit; transition: border-color 0.2s; }
+    .q-input:focus { border-color: var(--econ); }
+    .q-input.correct { border-color: var(--green); background: var(--green-light); }
+    .q-input.wrong   { border-color: var(--red); background: #fef2f2; }
+    .game-footer { padding: 12px 16px 20px; flex-shrink: 0; }
+    .submit-btn { width: 100%; padding: 14px; background: var(--econ); color: white; font-weight: 900; font-size: 1rem; border: none; border-radius: 12px; cursor: pointer; }
+    .submit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* RESULTS */
+    #screen-results { min-height: 100vh; flex-direction: column; max-width: 640px; margin: 0 auto; width: 100%; }
+    .results-hdr { background: var(--econ); padding: 11px 16px; flex-shrink: 0; }
+    .results-hdr h2 { font-size: 0.88rem; color: white; }
+    .results-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .score-card { background: var(--econ); border-radius: 14px; padding: 22px; text-align: center; color: white; }
+    .score-num { font-size: 3rem; font-weight: 900; }
+    .stars-big { font-size: 2rem; margin: 6px 0; }
+    .score-time { font-size: 0.78rem; opacity: 0.6; margin-top: 4px; }
+    .missed-item { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; }
+    .missed-q    { font-size: 0.8rem; color: var(--muted); margin-bottom: 5px; font-weight: 600; }
+    .missed-ok   { font-size: 0.88rem; color: var(--green); font-weight: 700; line-height: 1.4; }
+    .missed-bad  { font-size: 0.82rem; color: var(--red); margin-top: 2px; }
+    .action-row  { display: flex; gap: 8px; }
+    .action-btn  { flex: 1; padding: 12px; border-radius: 10px; font-weight: 900; font-size: 0.9rem; border: 2px solid var(--econ); cursor: pointer; transition: all 0.2s; }
+    .action-btn.primary   { background: var(--econ); color: white; }
+    .action-btn.secondary { background: white; color: var(--econ); }
+    .section-label { font-size: 0.68rem; font-weight: 900; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+    .unlock-note { color: var(--econ2); font-weight: 900; font-size: 0.9rem; text-align: center; }
+  </style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-inner">
+    <div class="turbo-logo">TURBO</div>
+    <div class="turbo-sub">LC Economics · HL &amp; OL · Term Drill</div>
+
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Stars to unlock The Cousin</span><span id="progress-pct">0%</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="star-banner" id="star-banner">⭐ 0 stars — need 5 to unlock The Cousin</div>
+
+    <div id="cat-buttons"></div>
+    <div id="level-list"></div>
+    <footer>© 2026 Synge Street Games: Imagination and Perseverance</footer>
+  </div>
+</div>
+
+<!-- GAME -->
+<div id="screen-game" class="screen">
+  <div class="game-hdr">
+    <button class="back-btn" onclick="showWelcome()">← Levels</button>
+    <h2 id="game-title">Level 1</h2>
+    <div id="timer">0s</div>
+  </div>
+  <div class="game-body" id="game-body"></div>
+  <div class="game-footer">
+    <button class="submit-btn" id="submit-btn" onclick="submitAnswers()">Check Answers</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="results-hdr"><h2>Results</h2></div>
+  <div class="results-body" id="results-body"></div>
+</div>
+
+<script>
+// ============================================================
+// CATEGORIES
+// ============================================================
+const CATEGORIES = [
+  { key: 'demand_supply',     label: '📉 Demand & Supply' },
+  { key: 'elasticity',        label: '📐 Elasticity' },
+  { key: 'market_structures', label: '🏭 Market Structures' },
+  { key: 'costs_revenue',     label: '💶 Costs & Revenue' },
+  { key: 'market_failure',    label: '⚠️ Market Failure' },
+  { key: 'macro',             label: '📊 Macroeconomics' },
+  { key: 'money_banking',     label: '🏦 Money & Banking' },
+  { key: 'policy',            label: '🏛️ Fiscal & Monetary Policy' },
+  { key: 'international',     label: '🌍 International & EU' },
+];
+
+// ============================================================
+// ITEMS — 600+ economics terms/definitions across 8 levels
+// ============================================================
+const ITEMS = {
+
+demand_supply: [
+  {q:"Define demand",a:"The quantity of a good consumers are willing and able to buy at various prices over a given time period",lv:1},
+  {q:"Define supply",a:"The quantity of a good producers are willing and able to offer for sale at various prices over a given time period",lv:1},
+  {q:"State the law of demand",a:"As price rises, quantity demanded falls, ceteris paribus",lv:1},
+  {q:"State the law of supply",a:"As price rises, quantity supplied rises, ceteris paribus",lv:1},
+  {q:"What does ceteris paribus mean?",a:"All other things being equal or all other factors remaining unchanged",lv:1},
+  {q:"What is market equilibrium?",a:"The price at which quantity demanded equals quantity supplied",lv:1},
+  {q:"What is a substitute good?",a:"A good that can replace another good e.g. butter and margarine",lv:1},
+  {q:"What is a complementary good?",a:"A good consumed together with another good e.g. cars and petrol",lv:1},
+  {q:"What is a normal good?",a:"A good for which demand increases as income rises",lv:1},
+  {q:"What is an inferior good?",a:"A good for which demand falls as income rises e.g. own-brand supermarket goods",lv:1},
+  {q:"What causes a movement along the demand curve?",a:"A change in the price of the good itself",lv:2},
+  {q:"What causes a shift of the demand curve?",a:"A change in any factor other than the price of the good itself",lv:2},
+  {q:"Name four factors that shift the demand curve",a:"Income, prices of related goods, consumer tastes, population size",lv:2},
+  {q:"Name four factors that shift the supply curve",a:"Input costs, technology, taxes and subsidies, number of producers",lv:2},
+  {q:"What is excess demand?",a:"When quantity demanded exceeds quantity supplied at a given price, causing a shortage",lv:2},
+  {q:"What is excess supply?",a:"When quantity supplied exceeds quantity demanded at a given price, causing a surplus",lv:2},
+  {q:"If a substitute good rises in price, what happens to demand for this good?",a:"Demand increases as consumers switch from the more expensive substitute",lv:2},
+  {q:"If income rises and X is a normal good, what happens to its demand curve?",a:"The demand curve shifts right — greater quantity demanded at every price",lv:2},
+  {q:"What is consumer surplus?",a:"The difference between what consumers are willing to pay and what they actually pay",lv:3},
+  {q:"What is producer surplus?",a:"The difference between the price producers receive and their minimum supply price",lv:3},
+  {q:"What is the price mechanism?",a:"The system by which prices rise and fall to allocate scarce resources in a free market",lv:3},
+  {q:"What happens to equilibrium price if demand increases?",a:"Equilibrium price rises and equilibrium quantity rises",lv:3},
+  {q:"What happens to equilibrium price if supply increases?",a:"Equilibrium price falls and equilibrium quantity rises",lv:3},
+  {q:"What is the signalling function of prices?",a:"Rising prices signal increased scarcity, attracting new producers; falling prices signal excess supply, causing producers to exit",lv:4},
+  {q:"What is the rationing function of prices?",a:"Prices ration scarce goods by excluding consumers unwilling or unable to pay the market price",lv:4},
+  {q:"Using supply and demand, explain the effect of a good harvest on food prices",a:"A good harvest increases supply, shifting the supply curve right, causing equilibrium price to fall and quantity to rise",lv:4},
+  {q:"What is a Giffen good?",a:"An inferior good whose demand increases as price rises, because the income effect outweighs the substitution effect",lv:5},
+  {q:"What is the income effect of a price change?",a:"When a price change alters consumers real purchasing power, affecting the quantity demanded",lv:5},
+  {q:"What is the substitution effect of a price change?",a:"When a price rise makes a good relatively more expensive, consumers substitute toward cheaper alternatives",lv:5},
+  {q:"Explain why a market reaches equilibrium",a:"At prices above equilibrium, excess supply causes producers to cut prices; below equilibrium, excess demand causes prices to rise; this continues until quantity supplied equals quantity demanded",lv:6},
+  {q:"Show the effect of an excise tax on a market diagram",a:"The tax shifts the supply curve upward by the tax amount; equilibrium price rises and quantity falls; tax burden is shared between buyers and sellers depending on relative elasticities",lv:6},
+  {q:"Distinguish between a change in demand and a change in quantity demanded",a:"A change in quantity demanded is a movement along the existing demand curve caused by a price change; a change in demand is a shift of the entire curve caused by a non-price factor",lv:7},
+  {q:"Evaluate the effectiveness of the price mechanism in allocating resources",a:"The price mechanism efficiently allocates resources through signals and incentives but fails in cases of market failure such as externalities, public goods, and information asymmetry where government intervention may improve efficiency",lv:8},
+],
+
+elasticity: [
+  {q:"Define price elasticity of demand (PED)",a:"A measure of the responsiveness of quantity demanded to a change in the price of a good",lv:1},
+  {q:"State the formula for PED",a:"PED = percentage change in quantity demanded divided by percentage change in price",lv:1},
+  {q:"If PED = -0.4, is demand elastic or inelastic?",a:"Inelastic — the absolute value is less than 1",lv:1},
+  {q:"If PED = -2.5, is demand elastic or inelastic?",a:"Elastic — the absolute value is greater than 1",lv:1},
+  {q:"Define price elasticity of supply (PES)",a:"A measure of the responsiveness of quantity supplied to a change in the price of a good",lv:1},
+  {q:"State the formula for PES",a:"PES = percentage change in quantity supplied divided by percentage change in price",lv:1},
+  {q:"Define income elasticity of demand (YED)",a:"A measure of the responsiveness of demand to a change in consumer income",lv:2},
+  {q:"What does a positive YED value indicate?",a:"The good is a normal good — demand rises as income rises",lv:2},
+  {q:"What does a negative YED value indicate?",a:"The good is an inferior good — demand falls as income rises",lv:2},
+  {q:"Define cross elasticity of demand (CED)",a:"A measure of the responsiveness of demand for one good to a change in the price of another good",lv:2},
+  {q:"What does a positive CED indicate about two goods?",a:"The goods are substitutes — a rise in the price of one increases demand for the other",lv:2},
+  {q:"What does a negative CED indicate about two goods?",a:"The goods are complements — a rise in the price of one reduces demand for the other",lv:2},
+  {q:"Name four factors affecting PED",a:"Availability of substitutes, whether the good is a necessity or luxury, proportion of income spent, time period",lv:3},
+  {q:"Why is demand for insulin price inelastic?",a:"There are no substitutes and it is a necessity — diabetics must buy it regardless of price",lv:3},
+  {q:"Why is demand for luxury goods typically price elastic?",a:"Substitutes are available and they are non-essential — consumers reduce demand significantly if price rises",lv:3},
+  {q:"Why is PES more elastic in the long run?",a:"Firms have more time to adjust production capacity, acquire inputs, and enter or exit the market",lv:3},
+  {q:"If a firm raises price by 10% and total revenue increases, what does this tell us about PED?",a:"Demand is inelastic — the revenue gain from the higher price more than offsets the revenue loss from lower quantity",lv:4},
+  {q:"If PED is elastic and a firm lowers price, what happens to total revenue?",a:"Total revenue increases — the gain in quantity sold more than compensates for the lower price per unit",lv:4},
+  {q:"What is unitary elasticity?",a:"When PED equals 1 in absolute value — a given percentage change in price causes the same percentage change in quantity; total revenue is unchanged",lv:4},
+  {q:"Why might a government use PED data when setting excise taxes?",a:"Goods with inelastic demand yield more tax revenue with less reduction in quantity demanded — e.g. cigarettes",lv:5},
+  {q:"Explain the relationship between PED and a firms total revenue",a:"If PED is inelastic: raising price increases TR. If elastic: raising price reduces TR. If unitary: TR is unchanged by price changes.",lv:6},
+  {q:"Explain why agricultural products tend to have inelastic demand and supply",a:"Agricultural products are necessities with few substitutes giving inelastic demand. Production cannot easily adjust in the short term due to growing seasons giving inelastic supply.",lv:6},
+  {q:"What is the cobweb theorem?",a:"A model explaining price instability in agricultural markets where inelastic supply causes producers to over or under produce based on last seasons price creating boom-bust price cycles",lv:7},
+  {q:"Evaluate the use of PED in a firm's pricing decisions",a:"PED guides pricing strategy — inelastic demand allows price rises to increase revenue; elastic demand favours lower prices. However, PED is difficult to measure accurately and may vary across market segments and time periods",lv:8},
+],
+
+market_structures: [
+  {q:"Name the four main market structures",a:"Perfect competition, monopolistic competition, oligopoly, monopoly",lv:1},
+  {q:"Define a monopoly",a:"A market structure with only one seller of a good or service with no close substitutes",lv:1},
+  {q:"Define perfect competition",a:"A market structure with many buyers and sellers, homogeneous products, free entry and exit, and perfect information",lv:1},
+  {q:"What is a price taker?",a:"A firm that accepts the market price and cannot influence it — typical in perfect competition",lv:1},
+  {q:"What is a price maker?",a:"A firm with market power that can set the price for its product — typical in monopoly",lv:1},
+  {q:"Define an oligopoly",a:"A market structure dominated by a small number of large firms whose decisions are interdependent",lv:1},
+  {q:"Define monopolistic competition",a:"A market structure with many firms selling differentiated products with free entry and exit",lv:2},
+  {q:"What is a barrier to entry?",a:"Any factor that prevents or restricts new firms from entering a market",lv:2},
+  {q:"Name three barriers to entry in a monopoly",a:"Patent protection, high startup capital, control of key resources, economies of scale, brand loyalty",lv:2},
+  {q:"What is product differentiation?",a:"Making a product appear different from competitors through branding, quality, features, or advertising",lv:2},
+  {q:"What is interdependence in an oligopoly?",a:"Each firms decisions on price and output affect and are influenced by the decisions of rival firms",lv:2},
+  {q:"What is collusion?",a:"When oligopolistic firms cooperate to fix prices or restrict output to maximise joint profits — illegal in most jurisdictions",lv:3},
+  {q:"What is a cartel?",a:"A formal agreement between oligopolistic firms to fix prices, restrict output, or divide markets e.g. OPEC",lv:3},
+  {q:"In perfect competition, what does AR = MR mean?",a:"The firm faces a horizontal demand curve so average revenue equals marginal revenue at all output levels",lv:3},
+  {q:"What is the long-run equilibrium condition in perfect competition?",a:"P = AR = MR = AC = MC — firms earn only normal profit; supernormal profit attracts entry which competes it away",lv:4},
+  {q:"Why does a monopolist produce where MC = MR?",a:"This is the profit-maximising condition — the output at which the extra revenue from one more unit equals the extra cost",lv:4},
+  {q:"What is allocative efficiency?",a:"When P = MC — the value placed on the last unit by consumers equals the cost of producing it",lv:4},
+  {q:"What is productive efficiency?",a:"When a firm produces at the lowest point on the average cost curve — minimum AC",lv:4},
+  {q:"Is a monopoly allocatively efficient?",a:"No — a monopolist sets P above MC, meaning consumers value the last unit more than it costs to produce, causing underproduction and deadweight loss",lv:5},
+  {q:"What is a natural monopoly?",a:"A market where the most efficient number of firms is one due to very high fixed costs and continuously falling average costs as output rises",lv:5},
+  {q:"What is the kinked demand curve theory?",a:"A theory explaining price rigidity in oligopoly — rivals match price cuts but not price rises, creating a kink in the demand curve and a discontinuity in the MR curve",lv:6},
+  {q:"Explain deadweight loss in a monopoly",a:"A monopolist restricts output below the competitive level. The consumer and producer surplus lost from the unproduced units is deadweight loss — a net welfare loss to society",lv:6},
+  {q:"What is price discrimination?",a:"Charging different prices to different consumers for the same product based on differences in willingness to pay",lv:7},
+  {q:"Evaluate monopoly versus perfect competition for consumer welfare",a:"Perfect competition maximises consumer welfare through lower prices and allocative efficiency. Monopoly creates deadweight loss and higher prices. However, monopoly profits may fund R&D and innovation that benefits consumers long-term",lv:8},
+],
+
+costs_revenue: [
+  {q:"Define fixed costs",a:"Costs that do not change with the level of output in the short run e.g. rent, insurance",lv:1},
+  {q:"Define variable costs",a:"Costs that change directly with the level of output e.g. raw materials, piece-rate wages",lv:1},
+  {q:"Define total costs",a:"Total fixed costs plus total variable costs",lv:1},
+  {q:"Define average cost (AC)",a:"Total cost divided by quantity of output — the cost per unit",lv:1},
+  {q:"Define marginal cost (MC)",a:"The additional cost of producing one more unit of output",lv:1},
+  {q:"Define total revenue (TR)",a:"Price multiplied by quantity sold",lv:1},
+  {q:"Define average revenue (AR)",a:"Total revenue divided by quantity sold — equal to the price per unit",lv:1},
+  {q:"Define marginal revenue (MR)",a:"The additional revenue earned from selling one more unit of output",lv:1},
+  {q:"What is the profit-maximising condition for any firm?",a:"MC = MR — produce the output at which marginal cost equals marginal revenue",lv:2},
+  {q:"Define normal profit",a:"The minimum profit needed to keep a firm in its current industry — when TR equals TC including opportunity cost",lv:2},
+  {q:"Define supernormal profit",a:"Profit above normal profit — when TR exceeds TC including opportunity cost; AR above AC",lv:2},
+  {q:"Define the short run",a:"A time period in which at least one factor of production is fixed",lv:2},
+  {q:"Define the long run",a:"A time period in which all factors of production can be varied",lv:2},
+  {q:"State the law of diminishing marginal returns",a:"As additional units of a variable factor are added to a fixed factor, the marginal product of the variable factor eventually falls",lv:3},
+  {q:"Define economies of scale",a:"The cost advantages a firm gains as it increases its scale of production, resulting in falling long-run average costs",lv:3},
+  {q:"Define diseconomies of scale",a:"When a firm grows beyond its optimal size and long-run average costs begin to rise",lv:3},
+  {q:"Name two internal economies of scale",a:"Technical economies from larger machinery, purchasing economies from bulk discounts, financial economies, managerial specialisation",lv:3},
+  {q:"What is minimum efficient scale (MES)?",a:"The lowest level of output at which a firm achieves minimum long-run average cost",lv:4},
+  {q:"If MC is below AC, what is happening to AC?",a:"AC is falling — the marginal cost is pulling the average down",lv:4},
+  {q:"If MC is above AC, what is happening to AC?",a:"AC is rising — the marginal cost is pulling the average up",lv:4},
+  {q:"What is the relationship between MC and AC curves?",a:"The MC curve always passes through the minimum point of the AC curve",lv:4},
+  {q:"What is the shutdown condition in the short run?",a:"A firm should shut down in the short run if price falls below average variable cost — it cannot cover variable costs",lv:5},
+  {q:"Distinguish between implicit and explicit costs",a:"Explicit costs are direct monetary payments to factors of production; implicit costs are opportunity costs of using owner-supplied resources",lv:5},
+  {q:"Explain why the MC curve is U-shaped",a:"Initially MC falls due to specialisation and efficiency; then rises due to diminishing marginal returns as the variable factor is overused with the fixed factor",lv:6},
+  {q:"What is economic profit versus accounting profit?",a:"Accounting profit is TR minus explicit costs. Economic profit is TR minus all costs including implicit opportunity costs.",lv:6},
+  {q:"Evaluate economies of scale as a barrier to entry",a:"Large firms have lower average costs than new entrants making it hard to compete on price. However, innovation, niche markets, and new technology can allow smaller firms to enter profitably despite this disadvantage",lv:8},
+],
+
+market_failure: [
+  {q:"Define market failure",a:"When the free market fails to allocate resources efficiently, resulting in a loss of economic welfare",lv:1},
+  {q:"Define an externality",a:"A cost or benefit experienced by a third party not involved in an economic transaction",lv:1},
+  {q:"Define a negative externality",a:"A cost imposed on a third party — social cost exceeds private cost e.g. factory pollution",lv:1},
+  {q:"Define a positive externality",a:"A benefit received by a third party — social benefit exceeds private benefit e.g. vaccination",lv:1},
+  {q:"Define a public good",a:"A good that is non-rival and non-excludable e.g. national defence, street lighting",lv:2},
+  {q:"What is the free rider problem?",a:"When individuals benefit from a public good without paying for it, leading to underprovision by the free market",lv:2},
+  {q:"Define a merit good",a:"A good underprovided by the free market because individuals undervalue its benefits e.g. education, healthcare",lv:2},
+  {q:"Define a demerit good",a:"A good overprovided by the free market because individuals underestimate its costs e.g. tobacco, alcohol",lv:2},
+  {q:"What is information asymmetry?",a:"When one party in a transaction has more or better information than the other party",lv:2},
+  {q:"Define moral hazard",a:"When one party takes greater risks because another party bears the cost e.g. insurance holder taking less care",lv:3},
+  {q:"What is marginal social cost (MSC)?",a:"The total cost to society of producing one more unit: MSC = marginal private cost plus external cost",lv:3},
+  {q:"What is marginal social benefit (MSB)?",a:"The total benefit to society from one more unit: MSB = marginal private benefit plus external benefit",lv:3},
+  {q:"What is the socially optimal output level?",a:"The output level where MSC equals MSB — maximising net social welfare",lv:4},
+  {q:"With a negative externality, how does free market output compare to social optimum?",a:"Free market overproduces — it ignores external costs so output exceeds the social optimum creating a welfare loss",lv:4},
+  {q:"With a positive externality, how does free market output compare to social optimum?",a:"Free market underproduces — it ignores external benefits so output falls below the social optimum",lv:4},
+  {q:"What is a Pigouvian tax?",a:"A tax equal to the external cost, designed to make firms internalise the negative externality and reduce output to the social optimum",lv:5},
+  {q:"What is a Pigouvian subsidy?",a:"A subsidy equal to the external benefit, encouraging production or consumption of goods with positive externalities up to the social optimum",lv:5},
+  {q:"Distinguish between non-rival and non-excludable",a:"Non-rival: one persons use does not reduce availability to others. Non-excludable: impossible to prevent non-payers from consuming the good.",lv:6},
+  {q:"What is government failure?",a:"When government intervention in markets makes resource allocation worse rather than better e.g. through inefficient regulation or policy capture",lv:6},
+  {q:"What is the Coase theorem?",a:"If property rights are well-defined and transaction costs are zero, private bargaining will internalise externalities without government intervention",lv:7},
+  {q:"Evaluate the use of carbon taxes to correct the negative externality of CO2 emissions",a:"Carbon taxes raise the cost of emissions incentivising firms to reduce pollution and innovate. However, the correct tax rate is difficult to set, the tax may be regressive, and carbon leakage to countries without such taxes may undermine effectiveness",lv:8},
+],
+
+macro: [
+  {q:"Define GDP",a:"The total monetary value of all final goods and services produced within a country in a given time period",lv:1},
+  {q:"Define GNP",a:"GDP plus net factor income from abroad — income earned by residents abroad minus income earned by foreigners domestically",lv:1},
+  {q:"Why is GNI more relevant than GDP for Ireland?",a:"Multinational profits inflate Irish GDP but are repatriated abroad; GNI better reflects actual income of Irish residents",lv:2},
+  {q:"Define inflation",a:"A sustained increase in the general price level of goods and services over time",lv:1},
+  {q:"How is inflation measured in Ireland?",a:"Using the Consumer Price Index — tracking changes in prices of a basket of goods and services representing typical consumer spending",lv:2},
+  {q:"Define demand-pull inflation",a:"Inflation caused by excessive aggregate demand — too much money chasing too few goods",lv:2},
+  {q:"Define cost-push inflation",a:"Inflation caused by rising production costs such as wages or raw material prices which producers pass on as higher prices",lv:2},
+  {q:"Define unemployment",a:"When people of working age who are willing and able to work cannot find employment",lv:1},
+  {q:"What is the unemployment rate?",a:"The number of unemployed people as a percentage of the total labour force",lv:1},
+  {q:"Define frictional unemployment",a:"Short-term unemployment that occurs when workers are between jobs and searching for new employment",lv:2},
+  {q:"Define structural unemployment",a:"Long-term unemployment caused by a mismatch between workers skills and available jobs, often due to economic change",lv:2},
+  {q:"Define cyclical unemployment",a:"Unemployment caused by a downturn in the economic cycle — a fall in aggregate demand reduces demand for labour",lv:2},
+  {q:"What is the natural rate of unemployment?",a:"The level of unemployment existing when the economy operates at full capacity — comprising frictional and structural unemployment",lv:3},
+  {q:"What is economic growth?",a:"A sustained increase in the productive capacity of an economy measured as an increase in real GDP",lv:1},
+  {q:"Distinguish between actual and potential economic growth",a:"Actual growth is measured increase in real GDP. Potential growth is an increase in the economys productive capacity — long-run aggregate supply.",lv:3},
+  {q:"What is the circular flow of income?",a:"A model showing how income flows between households and firms through product and factor markets with injections and withdrawals",lv:3},
+  {q:"Name the three injections into the circular flow",a:"Investment (I), Government spending (G), Exports (X)",lv:3},
+  {q:"Name the three withdrawals from the circular flow",a:"Savings (S), Taxation (T), Imports (M)",lv:3},
+  {q:"What is the Keynesian multiplier?",a:"The ratio by which an initial injection into the economy is multiplied to produce a larger final increase in national income",lv:4},
+  {q:"State the formula for the multiplier",a:"Multiplier = 1 divided by (1 minus MPC), or 1 divided by (MPS + MPT + MPM)",lv:4},
+  {q:"Define MPC",a:"Marginal propensity to consume — the fraction of additional income that is spent on consumption",lv:4},
+  {q:"What is aggregate demand?",a:"Total demand for all final goods and services in an economy: AD = C + I + G + (X minus M)",lv:4},
+  {q:"What is a recession?",a:"Two consecutive quarters of negative economic growth — falling real GDP",lv:3},
+  {q:"What is the Phillips curve?",a:"A model showing the short-run trade-off between inflation and unemployment — lower unemployment is associated with higher inflation",lv:5},
+  {q:"Why is the long-run Phillips curve described as vertical?",a:"In the long run there is no trade-off between inflation and unemployment — the economy returns to the natural rate regardless of inflation",lv:6},
+  {q:"Evaluate GDP as a measure of living standards",a:"GDP measures output but ignores income distribution, environmental damage, unpaid work, and quality of life. Better measures include HDI and GNI per capita adjusted for purchasing power",lv:8},
+],
+
+money_banking: [
+  {q:"Name the four functions of money",a:"Medium of exchange, store of value, unit of account, standard of deferred payment",lv:1},
+  {q:"What is the most important function of money?",a:"Medium of exchange — it eliminates barter and allows efficient transactions",lv:1},
+  {q:"What is the Central Bank of Ireland?",a:"Ireland's national central bank — supervises financial institutions and implements ECB monetary policy",lv:1},
+  {q:"What is the ECB?",a:"The European Central Bank — sets monetary policy for the eurozone, controls interest rates and money supply",lv:2},
+  {q:"What is fractional reserve banking?",a:"A system where banks hold only a fraction of deposits as reserves and lend out the remainder",lv:2},
+  {q:"What is the credit multiplier?",a:"The process by which an initial bank deposit leads to a larger increase in the total money supply through repeated lending and redepositing",lv:3},
+  {q:"State the formula for the credit multiplier",a:"Credit multiplier = 1 divided by the reserve ratio",lv:3},
+  {q:"Define the rate of interest",a:"The cost of borrowing money, expressed as a percentage of the principal per time period",lv:1},
+  {q:"What is quantitative easing?",a:"A monetary policy tool where a central bank creates new money to buy financial assets, increasing the money supply and lowering long-term interest rates",lv:4},
+  {q:"What is inflation targeting?",a:"A monetary policy framework where the central bank commits to achieving a specific inflation rate target — the ECB targets below but close to 2%",lv:4},
+  {q:"What is liquidity preference theory?",a:"Keynes theory that demand for money is driven by three motives: transactions, precautionary, and speculative",lv:5},
+  {q:"Evaluate the limitations of monetary policy for Ireland",a:"Ireland cannot set its own interest rates as a eurozone member — ECB policy may not suit Irelands specific conditions. Exchange rate policy is also unavailable. Fiscal policy is Irelands primary stabilisation tool.",lv:8},
+],
+
+policy: [
+  {q:"Define fiscal policy",a:"Government policy on taxation and public expenditure used to influence the economy",lv:1},
+  {q:"What is a budget surplus?",a:"When government revenue exceeds government expenditure in a given year",lv:1},
+  {q:"What is a budget deficit?",a:"When government expenditure exceeds government revenue in a given year",lv:1},
+  {q:"Define national debt",a:"The total accumulated borrowing of the government over time",lv:1},
+  {q:"What is expansionary fiscal policy?",a:"Increasing government spending or cutting taxes to stimulate aggregate demand during a recession",lv:2},
+  {q:"What is contractionary fiscal policy?",a:"Reducing government spending or raising taxes to reduce aggregate demand and combat inflation",lv:2},
+  {q:"What are automatic stabilisers?",a:"Fiscal mechanisms that automatically offset economic fluctuations without new policy decisions — e.g. unemployment benefits rise in recessions; tax revenues fall",lv:3},
+  {q:"What is discretionary fiscal policy?",a:"Deliberate changes to government spending and taxation to influence the economy",lv:3},
+  {q:"What is the crowding out effect?",a:"When government borrowing raises interest rates, reducing private sector investment",lv:4},
+  {q:"Define monetary policy",a:"The use of interest rates and the money supply by a central bank to influence inflation and economic activity",lv:1},
+  {q:"How does a rise in ECB interest rates reduce inflation?",a:"Higher rates increase borrowing costs, reduce consumer spending and investment, cool aggregate demand and reduce inflationary pressure",lv:3},
+  {q:"What is the Stability and Growth Pact?",a:"An EU agreement requiring member states to keep budget deficits below 3% of GDP and national debt below 60% of GDP",lv:3},
+  {q:"What is supply-side policy?",a:"Government policies aimed at increasing the productive capacity of the economy e.g. education investment, infrastructure, deregulation",lv:3},
+  {q:"What is a progressive tax?",a:"A tax where the effective tax rate increases as income rises e.g. income tax",lv:2},
+  {q:"What is a regressive tax?",a:"A tax where the effective tax rate falls as income rises — e.g. VAT takes a higher proportion of income from lower earners",lv:2},
+  {q:"Distinguish between direct and indirect taxes",a:"Direct taxes are levied on income and wealth such as income tax. Indirect taxes are levied on expenditure such as VAT and excise duties.",lv:2},
+  {q:"What is the transmission mechanism of monetary policy?",a:"The process by which interest rate changes filter through the economy — affecting borrowing costs, asset prices, exchange rates, and aggregate demand",lv:4},
+  {q:"Evaluate the effectiveness of fiscal policy during a recession",a:"Expansionary fiscal policy can stimulate aggregate demand through the multiplier effect. Effectiveness depends on the size of the multiplier, time lags, crowding out, and the extent of leakages through imports and savings",lv:8},
+],
+
+international: [
+  {q:"Define international trade",a:"The exchange of goods and services between countries",lv:1},
+  {q:"Define absolute advantage",a:"When a country can produce a good using fewer resources than another country",lv:1},
+  {q:"Define comparative advantage",a:"When a country can produce a good at a lower opportunity cost than another country",lv:2},
+  {q:"State the principle of comparative advantage",a:"Countries should specialise in producing goods where they have the lowest opportunity cost and trade for other goods — this maximises global welfare",lv:2},
+  {q:"Define protectionism",a:"Government policies that restrict imports to protect domestic industries from foreign competition",lv:2},
+  {q:"What is a tariff?",a:"A tax imposed on imported goods, raising their price to protect domestic producers",lv:1},
+  {q:"What is an import quota?",a:"A limit on the quantity of a good that can be imported in a given period",lv:1},
+  {q:"Name two arguments for protectionism",a:"Infant industry argument, protecting strategic industries, preventing dumping, correcting balance of payments deficits, protecting employment",lv:3},
+  {q:"What is the WTO?",a:"The World Trade Organisation — sets rules for global trade and resolves trade disputes between member countries",lv:2},
+  {q:"Define the balance of payments",a:"A record of all economic transactions between a country and the rest of the world in a given period",lv:2},
+  {q:"What is a current account deficit?",a:"When a country imports more goods, services, and income than it exports — a net debtor to the rest of the world",lv:3},
+  {q:"Define an exchange rate",a:"The price of one currency expressed in terms of another currency",lv:1},
+  {q:"What is currency appreciation?",a:"An increase in the value of a currency relative to other currencies in a floating exchange rate system",lv:2},
+  {q:"How does a depreciation of the euro affect Irish exports?",a:"Irish exports become cheaper for foreign buyers, increasing competitiveness and raising demand for Irish goods",lv:3},
+  {q:"What is the EU Single Market?",a:"An area within the EU with free movement of goods, services, capital, and people — the four freedoms",lv:2},
+  {q:"What is the Common Agricultural Policy (CAP)?",a:"The EU system of agricultural subsidies and supports for European farmers",lv:2},
+  {q:"What is EMU?",a:"Economic and Monetary Union — member states share the euro, a single monetary policy via the ECB, and coordinate fiscal policies",lv:3},
+  {q:"What is the J-curve effect?",a:"After a currency depreciation, the current account initially worsens before improving because import prices rise immediately but export volumes take time to respond",lv:5},
+  {q:"Define purchasing power parity (PPP)",a:"The theory that exchange rates adjust so identical goods cost the same in different countries when expressed in a common currency",lv:5},
+  {q:"Evaluate the benefits of EU membership for Ireland",a:"Access to the worlds largest single market attracted foreign direct investment, cohesion funds supported development, and the euro provided monetary stability. However, Ireland lost independent monetary policy and is subject to EU fiscal rules",lv:8},
+],
+
+}; // end ITEMS
+
+// ============================================================
+// STATE & CONSTANTS
+// ============================================================
+const COUSIN_UNLOCK = 5;
+const Q_PER_LEVEL   = 5;
+const PENALTY_SECS  = 20;
+let currentCat   = 'demand_supply';
+let currentLevel = 1;
+let currentItems = [];
+let startTime, timerInterval;
+
+// ============================================================
+// STORAGE
+// ============================================================
+const sk = s => 'lc_econ_' + s;
+const getUnlocked   = ()        => parseInt(localStorage.getItem(sk('unlocked')) || '1');
+const setUnlocked   = lv        => { if (lv > getUnlocked()) localStorage.setItem(sk('unlocked'), lv); };
+const getBest       = (c, lv)   => localStorage.getItem(sk('best_' + c + '_' + lv));
+const setBest       = (c, lv, s)=> { const p = parseInt(getBest(c, lv) || '0'); if (s > p) localStorage.setItem(sk('best_' + c + '_' + lv), s); };
+const getTotalStars = ()        => { let t = 0; Object.keys(ITEMS).forEach(c => { for (let lv = 1; lv <= 8; lv++) t += parseInt(getBest(c, lv) || '0'); }); return t; };
+const cousinUnlocked= ()        => getTotalStars() >= COUSIN_UNLOCK;
+
+function getTurboData() {
+  const data = {};
+  Object.keys(ITEMS).forEach(cat => {
+    data[cat] = { label: CATEGORIES.find(c => c.key === cat)?.label || cat, levels: {} };
+    for (let lv = 1; lv <= 8; lv++) { const s = getBest(cat, lv); if (s) data[cat].levels[lv] = parseInt(s); }
+  });
+  return data;
+}
+
+// ============================================================
+// SCREENS
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function showWelcome() {
+  clearInterval(timerInterval);
+  renderWelcome();
+  showScreen('screen-welcome');
+}
+
+// ============================================================
+// RENDER WELCOME
+// ============================================================
+function renderWelcome() {
+  // Categories
+  const catDiv = document.getElementById('cat-buttons');
+  catDiv.innerHTML = '';
+  CATEGORIES.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'cat-btn' + (c.key === currentCat ? ' active' : '');
+    btn.textContent = c.label;
+    btn.onclick = () => { currentCat = c.key; localStorage.setItem(sk('last_cat'), c.key); renderWelcome(); };
+    catDiv.appendChild(btn);
+  });
+
+  // Progress bar
+  const stars = getTotalStars();
+  const pct = Math.min(100, Math.round((stars / COUSIN_UNLOCK) * 100));
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+  const banner = document.getElementById('star-banner');
+  if (cousinUnlocked()) {
+    banner.textContent = '🎉 ' + stars + ' stars — The Cousin is unlocked!';
+    banner.style.background = 'rgba(30,100,200,0.15)';
+  } else {
+    banner.textContent = '⭐ ' + stars + ' star' + (stars !== 1 ? 's' : '') + ' earned — need ' + COUSIN_UNLOCK + ' to unlock The Cousin';
+  }
+
+  // Levels
+  const list = document.getElementById('level-list');
+  list.innerHTML = '';
+  const unlocked = getUnlocked();
+  const zones = { 1:'Levels 1–3 · Definitions & Terms', 4:'Levels 4–5 · Application', 6:'Levels 6–7 · Analysis', 8:'Level 8 · HL Evaluation' };
+
+  for (let lv = 1; lv <= 8; lv++) {
+    if (zones[lv]) {
+      const zl = document.createElement('div');
+      zl.className = 'zone-label';
+      zl.textContent = zones[lv];
+      list.appendChild(zl);
+    }
+    const pool = (ITEMS[currentCat] || []).filter(i => i.lv === lv);
+    if (!pool.length) continue;
+
+    const btn = document.createElement('button');
+    const best = getBest(currentCat, lv);
+    const locked = lv > unlocked;
+    const starsStr = best ? '⭐'.repeat(parseInt(best)) + '☆'.repeat(3 - parseInt(best)) : '';
+    btn.className = 'level-btn' + (lv >= 6 ? ' hl-zone' : '');
+    btn.innerHTML = `<span>${locked ? '🔒 ' : ''}Level ${lv}</span><span class="level-badge">${starsStr || (locked ? '' : '—')}</span>`;
+    btn.disabled = locked;
+    btn.onclick = () => startGame(lv);
+    list.appendChild(btn);
+  }
+
+  if (cousinUnlocked()) {
+    const cb = document.createElement('button');
+    cb.className = 'level-btn cousin-btn';
+    cb.textContent = '🎓 The Cousin is ready — enter now';
+    cb.onclick = () => {
+      localStorage.setItem('lc_econ_turbo_data', JSON.stringify(getTurboData()));
+      window.location.href = 'lc-economics-cousin.html';
+    };
+    list.appendChild(cb);
+  }
+}
+
+// ============================================================
+// GAME
+// ============================================================
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function startGame(lv) {
+  currentLevel = lv;
+  const pool = (ITEMS[currentCat] || []).filter(i => i.lv === lv);
+  const adj  = (ITEMS[currentCat] || []).filter(i => Math.abs(i.lv - lv) === 1);
+  currentItems = shuffle([...pool, ...adj]).slice(0, Q_PER_LEVEL);
+
+  const cat = CATEGORIES.find(c => c.key === currentCat);
+  document.getElementById('game-title').textContent = (cat?.label || currentCat) + ' · Level ' + lv;
+
+  const body = document.getElementById('game-body');
+  body.innerHTML = '';
+  currentItems.forEach((item, idx) => {
+    const div = document.createElement('div');
+    div.className = 'q-item';
+    div.innerHTML = `<div class="q-prompt">${idx + 1}. ${escHtml(item.q)}</div>
+      <input class="q-input" type="text" data-answer="${escAttr(item.a)}" placeholder="Your answer..." autocomplete="off" autocorrect="off" spellcheck="false">`;
+    div.querySelector('input').addEventListener('paste', e => e.preventDefault());
+    body.appendChild(div);
+  });
+
+  document.getElementById('submit-btn').disabled = false;
+  clearInterval(timerInterval);
+  startTime = Date.now();
+  timerInterval = setInterval(() => {
+    document.getElementById('timer').textContent = Math.floor((Date.now() - startTime) / 1000) + 's';
+  }, 1000);
+
+  showScreen('screen-game');
+}
+
+function submitAnswers() {
+  clearInterval(timerInterval);
+  document.getElementById('submit-btn').disabled = true;
+  const elapsed = Math.floor((Date.now() - startTime) / 1000);
+  let correct = 0, penalty = 0, strictOk = 0;
+  const missed = [];
+
+  document.querySelectorAll('#game-body .q-input').forEach(inp => {
+    const user  = inp.value.trim();
+    const ans   = inp.dataset.answer;
+    const lenient = normL(user) === normL(ans);
+    const strict  = normS(user) === normS(ans);
+    if (lenient) { correct++; inp.classList.add('correct'); }
+    else { penalty += PENALTY_SECS; inp.classList.add('wrong'); missed.push({ q: inp.closest('.q-item').querySelector('.q-prompt').textContent, ok: ans, bad: user }); }
+    if (strict) strictOk++;
+  });
+
+  const total = currentItems.length;
+  const totalTime = elapsed + penalty;
+  const unlockTime = 95 - (currentLevel - 1) * 9;
+  let stars = 0;
+  if (strictOk === total && totalTime <= unlockTime) stars = 3;
+  else if (correct === total) stars = 2;
+  else if (correct >= Math.ceil(total * 0.5)) stars = 1;
+
+  setBest(currentCat, currentLevel, stars);
+  if (stars >= 1) setUnlocked(currentLevel + 1);
+
+  // Results
+  const body = document.getElementById('results-body');
+  body.innerHTML = '';
+
+  const scoreCard = document.createElement('div');
+  scoreCard.className = 'score-card';
+  scoreCard.innerHTML = `<div class="score-num">${correct}/${total}</div>
+    <div class="stars-big">${'⭐'.repeat(stars)}${'☆'.repeat(3-stars)}</div>
+    <div class="score-time">Time: ${elapsed}s + Penalty: ${penalty}s = ${totalTime}s</div>`;
+  body.appendChild(scoreCard);
+
+  if (stars >= 1 && currentLevel < 8) {
+    const u = document.createElement('div');
+    u.className = 'unlock-note';
+    u.textContent = '🔓 Level ' + (currentLevel + 1) + ' unlocked!';
+    body.appendChild(u);
+  }
+
+  if (cousinUnlocked()) {
+    const c = document.createElement('div');
+    c.className = 'unlock-note';
+    c.innerHTML = '🎓 The Cousin is ready! <a href="lc-economics-cousin.html" style="color:var(--econ2)" onclick="saveTurboData()">Enter →</a>';
+    body.appendChild(c);
+  }
+
+  if (missed.length) {
+    const h = document.createElement('div');
+    h.className = 'section-label';
+    h.textContent = 'What you missed:';
+    body.appendChild(h);
+    missed.forEach(m => {
+      const d = document.createElement('div');
+      d.className = 'missed-item';
+      d.innerHTML = `<div class="missed-q">${escHtml(m.q)}</div>
+        <div class="missed-ok">✅ ${escHtml(m.ok)}</div>
+        <div class="missed-bad">❌ ${escHtml(m.bad || '(blank)')}</div>`;
+      body.appendChild(d);
+    });
+  }
+
+  const actions = document.createElement('div');
+  actions.className = 'action-row';
+  actions.innerHTML = `<button class="action-btn primary" onclick="startGame(${currentLevel})">Try Again</button>
+    <button class="action-btn secondary" onclick="showWelcome()">← Levels</button>`;
+  body.appendChild(actions);
+
+  showScreen('screen-results');
+}
+
+function saveTurboData() {
+  localStorage.setItem('lc_econ_turbo_data', JSON.stringify(getTurboData()));
+}
+
+// ============================================================
+// NORMALISE
+// ============================================================
+const normL = s => String(s).toLowerCase().replace(/[,\.;:!?]/g,'').replace(/\s+/g,' ').trim();
+const normS = s => String(s).toLowerCase().replace(/\s+/g,' ').trim();
+
+// ============================================================
+// UTILS
+// ============================================================
+const escHtml = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const escAttr = s => String(s||'').replace(/"/g,'&quot;');
+
+// ============================================================
+// INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem(sk('last_cat'));
+  if (saved && ITEMS[saved]) currentCat = saved;
+  renderWelcome();
+});
+</script>
+</body>
+</html>
